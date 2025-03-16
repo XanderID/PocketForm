@@ -96,6 +96,6 @@ $player->sendForm($form);
 For additional documentation, please follow [this link](https://github.com/XanderID/PocketForm/wiki).
 
 ### Todo
-- [x] Can change the Submit Button in CustomForm
-- [ ] Regex Validator
-- [ ] Range Validator
+- [x] Can change the Submit Button in CustomForm.
+- [ ] Regex Validator.
+- [ ] Range Validator.
