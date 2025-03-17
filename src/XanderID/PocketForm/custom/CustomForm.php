@@ -9,9 +9,11 @@ use XanderID\PocketForm\custom\element\ErrorLabel;
 use XanderID\PocketForm\custom\element\Input;
 use XanderID\PocketForm\modal\ModalFormResponse;
 use XanderID\PocketForm\PocketForm;
+use XanderID\PocketForm\PocketFormException;
 use XanderID\PocketForm\traits\Confirm;
 use XanderID\PocketForm\traits\Submit;
 use XanderID\PocketForm\Utils;
+use function count;
 
 /**
  * Represents a custom form that can contain various custom elements.
@@ -125,7 +127,9 @@ class CustomForm extends PocketForm {
 		if (null !== ($confirm = $this->getConfirm())) {
 			$confirm->onResponse(function (ModalFormResponse $response) use ($values) : void {
 				$player = $response->getPlayer();
-				parent::callOnResponse($player, $values);
+				if ($response->getChoice()) {
+					parent::callOnResponse($player, $values);
+				}
 			});
 			$player->sendForm($confirm);
 			return;
@@ -143,5 +147,20 @@ class CustomForm extends PocketForm {
 		return [
 			'submit' => $this->submit,
 		];
+	}
+
+	/**
+	 * Serialize the form to an array suitable for JSON encoding.
+	 *
+	 * @return array the array representation of the form
+	 *
+	 * @throws PocketFormException if there is no element at all
+	 */
+	public function jsonSerialize() : array {
+		if (count($this->getElements()) < 1) {
+			throw new PocketFormException('Failed to build Custom Form: Please add Element at least 1');
+		}
+
+		return parent::jsonSerialize();
 	}
 }

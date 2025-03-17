@@ -67,12 +67,14 @@ class SimpleForm extends PocketForm {
 		if (null !== ($confirm = $selected->getConfirm())) {
 			$confirm->onResponse(function (ModalFormResponse $response) use ($selected, $data) : void {
 				$player = $response->getPlayer();
-				if ($selected->isOnClick()) {
-					$selected->onClickCall($player);
-					return;
-				}
+				if ($response->getChoice()) {
+					if ($selected->isOnClick()) {
+						$selected->onClickCall($player);
+						return;
+					}
 
-				parent::callOnResponse($player, $data);
+					parent::callOnResponse($player, $data);
+				}
 			});
 			$player->sendForm($confirm);
 			return;

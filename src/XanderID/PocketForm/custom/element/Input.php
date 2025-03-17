@@ -76,7 +76,7 @@ class Input extends CustomElement {
 	 * @param array &$components The components array to add the input to
 	 */
 	public function build(array &$components) : void {
-		$input = ['type' => $this->getType(), 'text' => $this->label, 'placeholder' => $this->placeholder, 'tip' => 'kont'];
+		$input = ['type' => $this->getType(), 'text' => $this->label, 'placeholder' => $this->placeholder];
 		if ($this->default !== null) {
 			$input['default'] = $this->default;
 		}

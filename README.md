@@ -12,7 +12,7 @@ PocketForm is a powerful and flexible PHP library designed exclusively for creat
   - [Usage Examples](#usage-examples)
     - [Creating a Simple Menu Form](#creating-a-simple-menu-form)
     - [Wiki](#wiki)
-  - [Todo](#todo)
+  - [Whats News](#whats-news)
 
 ## Features
 
@@ -95,7 +95,8 @@ $player->sendForm($form);
 
 For additional documentation, please follow [this link](https://github.com/XanderID/PocketForm/wiki).
 
-### Todo
-- [x] Can change the Submit Button in CustomForm.
-- [ ] Regex Validator.
-- [ ] Range Validator.
+### Whats News
+* Added Range Validator
+* Added Regex Validator
+* Fix Confirmation Bug
+* Throw Error when No Element on CustomForm
