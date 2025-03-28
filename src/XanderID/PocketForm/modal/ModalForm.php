@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * Copyright (c) 2025-2025 XanderID
+ *
+ * For the full copyright and license information, please view
+ * the LICENSE file that was distributed with this source code.
+ *
+ * @see https://github.com/XanderID/PocketForm
+ */
+
 declare(strict_types=1);
 
 namespace XanderID\PocketForm\modal;
@@ -10,6 +19,8 @@ use XanderID\PocketForm\traits\Submit;
 
 /**
  * Represents a modal form with two buttons (submit and cancel).
+ *
+ * @extends PocketForm<ModalFormResponse>
  */
 class ModalForm extends PocketForm {
 	use Body;
@@ -68,7 +79,7 @@ class ModalForm extends PocketForm {
 	/**
 	 * Initialize modal form components.
 	 *
-	 * @return array an associative array of components including body, submit, and cancel texts
+	 * @return array<string, mixed> an associative array of components including body, submit, and cancel texts
 	 */
 	protected function initComponents() : array {
 		return [

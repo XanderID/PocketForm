@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * Copyright (c) 2025-2025 XanderID
+ *
+ * For the full copyright and license information, please view
+ * the LICENSE file that was distributed with this source code.
+ *
+ * @see https://github.com/XanderID/PocketForm
+ */
+
 declare(strict_types=1);
 
 namespace XanderID\PocketForm\custom;
@@ -18,9 +27,9 @@ trait CustomHelper {
 	/**
 	 * Add a dropdown element.
 	 *
-	 * @param string   $label   the label for the dropdown
-	 * @param array    $options an array of options for the dropdown
-	 * @param int|null $default the default selected index
+	 * @param string       $label   the label for the dropdown
+	 * @param list<string> $options an array of options for the dropdown
+	 * @param int|null     $default the default selected index
 	 */
 	public function addDropdown(string $label, array $options, ?int $default = null) : self {
 		$dropdown = new Dropdown($label, $options, $default);
@@ -70,9 +79,9 @@ trait CustomHelper {
 	/**
 	 * Add a step slider element.
 	 *
-	 * @param string   $label   the label for the step slider
-	 * @param array    $step    an array of step values
-	 * @param int|null $default the default selected step index
+	 * @param string    $label   the label for the step slider
+	 * @param list<int> $step    an array of step values
+	 * @param int|null  $default the default selected step index
 	 */
 	public function addStepSlider(string $label, array $step, ?int $default = null) : self {
 		$stepSlider = new StepSlider($label, $step, $default);

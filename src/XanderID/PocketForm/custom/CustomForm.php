@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * Copyright (c) 2025-2025 XanderID
+ *
+ * For the full copyright and license information, please view
+ * the LICENSE file that was distributed with this source code.
+ *
+ * @see https://github.com/XanderID/PocketForm
+ */
+
 declare(strict_types=1);
 
 namespace XanderID\PocketForm\custom;
@@ -14,9 +23,13 @@ use XanderID\PocketForm\traits\Confirm;
 use XanderID\PocketForm\traits\Submit;
 use XanderID\PocketForm\Utils;
 use function count;
+use function gettype;
+use function is_array;
 
 /**
  * Represents a custom form that can contain various custom elements.
+ *
+ * @extends PocketForm<CustomFormResponse>
  */
 class CustomForm extends PocketForm {
 	use Submit;
@@ -69,14 +82,23 @@ class CustomForm extends PocketForm {
 	 * Process the custom form response data.
 	 *
 	 * @param Player $player the player who submitted the form
-	 * @param mixed  $data   the raw response data
+	 * @param mixed  $data   the raw response data; expected to be an array with int keys and values of type bool|int|string|null
+	 *
+	 * @throws PocketFormException if $data is not iterable
 	 */
 	public function callOnResponse(Player $player, mixed $data) : void {
+		if (!is_array($data)) {
+			throw new PocketFormException('Expected response data to be an array, got ' . gettype($data));
+		}
+
+		/** @var array<int, scalar|null> $data */
 		$values = [];
 		$elements = $this->getElements();
+		$mapData = Utils::customMap($elements, $data);
 		$errorLabels = [];
 		$isError = false;
-		foreach ($data as $index => $value) {
+
+		foreach ($mapData as $index => $value) {
 			/** @var CustomElement $element */
 			$element = $elements[$index];
 			if (null === $value) {
@@ -85,16 +107,17 @@ class CustomForm extends PocketForm {
 
 			$parsed = Utils::customValue($element, $value);
 			$validated = $element->validate($parsed);
-			$previous = $elements[$index - 1] ?? null;
+			$indexInt = (int) $index;
+			$previous = $elements[$indexInt - 1] ?? null;
 			if (null !== $validated) {
 				if (!$previous instanceof ErrorLabel) {
-					$errorLabels[$index] = new ErrorLabel($validated);
+					$errorLabels[$indexInt] = new ErrorLabel($validated);
 				}
 
 				$isError = true;
 			} else {
 				if ($previous instanceof ErrorLabel) {
-					unset($elements[$index - 1]);
+					unset($elements[$indexInt - 1]);
 				}
 			}
 
@@ -106,7 +129,7 @@ class CustomForm extends PocketForm {
 			 *
 			 * @var Input $element
 			 */
-			$element->setDefault($value);
+			$element->setDefault((string) $value);
 		}
 
 		if ($isError) {
@@ -141,7 +164,7 @@ class CustomForm extends PocketForm {
 	/**
 	 * Initialize form components specific to custom forms.
 	 *
-	 * @return array an array containing custom components
+	 * @return array<string, mixed> an array containing custom components
 	 */
 	protected function initComponents() : array {
 		return [
@@ -152,13 +175,13 @@ class CustomForm extends PocketForm {
 	/**
 	 * Serialize the form to an array suitable for JSON encoding.
 	 *
-	 * @return array the array representation of the form
+	 * @return array<string, mixed> the array representation of the form
 	 *
 	 * @throws PocketFormException if there is no element at all
 	 */
 	public function jsonSerialize() : array {
 		if (count($this->getElements()) < 1) {
-			throw new PocketFormException('Failed to build Custom Form: Please add Element at least 1');
+			throw new PocketFormException('Failed to build Custom Form: Please add at least 1 element');
 		}
 
 		return parent::jsonSerialize();

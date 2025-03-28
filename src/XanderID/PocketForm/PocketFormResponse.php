@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * Copyright (c) 2025-2025 XanderID
+ *
+ * For the full copyright and license information, please view
+ * the LICENSE file that was distributed with this source code.
+ *
+ * @see https://github.com/XanderID/PocketForm
+ */
+
 declare(strict_types=1);
 
 namespace XanderID\PocketForm;
@@ -8,18 +17,24 @@ use pocketmine\player\Player;
 
 /**
  * Represents a response from a form submitted by a player.
+ *
+ * @template F of PocketForm
  */
 abstract class PocketFormResponse {
+	/** @var F */
+	public PocketForm $form;
+
 	/**
-	 * @param Player     $player the player who submitted the response
-	 * @param PocketForm $form   the form that was submitted
-	 * @param mixed      $data   the raw response data
+	 * @param Player $player the player who submitted the response
+	 * @param F      $form   the form that was submitted
+	 * @param mixed  $data   the raw response data
 	 */
 	public function __construct(
 		public Player $player,
-		public PocketForm $form,
+		PocketForm $form,
 		public mixed $data
 	) {
+		$this->form = $form;
 		$this->processData($data);
 	}
 
@@ -41,6 +56,8 @@ abstract class PocketFormResponse {
 
 	/**
 	 * Get the form that was submitted.
+	 *
+	 * @return F
 	 */
 	public function getForm() : PocketForm {
 		return $this->form;

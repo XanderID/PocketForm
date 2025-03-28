@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * Copyright (c) 2025-2025 XanderID
+ *
+ * For the full copyright and license information, please view
+ * the LICENSE file that was distributed with this source code.
+ *
+ * @see https://github.com/XanderID/PocketForm
+ */
+
 declare(strict_types=1);
 
 namespace XanderID\PocketForm;
@@ -17,14 +26,16 @@ use function is_int;
 /**
  * Represents a base form with functionality for handling responses,
  * closing, and building components.
+ *
+ * @template T of PocketFormResponse
  */
 abstract class PocketForm implements Form {
 	use Elements;
 
-	/** @var Closure|null callback for handling the form response */
+	/** @var Closure(T):void|null Callback for handling the form response */
 	protected ?Closure $onResponseListener = null;
 
-	/** @var Closure|null callback for handling the form close event */
+	/** @var Closure(Player):void|null Callback for handling the form close event */
 	protected ?Closure $onCloseListener = null;
 
 	/**
@@ -56,7 +67,7 @@ abstract class PocketForm implements Form {
 	/**
 	 * Initialize additional form components.
 	 *
-	 * @return array an associative array of additional components
+	 * @return array<string, mixed> an associative array of additional components
 	 */
 	abstract protected function initComponents() : array;
 
@@ -65,7 +76,7 @@ abstract class PocketForm implements Form {
 	 *
 	 * @param string $title the new title for the form
 	 *
-	 * @return self returns the current form instance
+	 * @return self<T> returns the current form instance
 	 */
 	public function setTitle(string $title) : self {
 		$this->title = $title;
@@ -75,10 +86,11 @@ abstract class PocketForm implements Form {
 	/**
 	 * Set the onResponse callback.
 	 *
-	 * @param Closure $onResponse The callback to be executed when a response is received.
-	 *                            The callback should follow the signature defined by {@see getSignature()}.
+	 * The callback should follow the signature defined by {@see getSignature()}.
 	 *
-	 * @return self returns the current form instance
+	 * @param Closure(T):void $onResponse the callback to be executed when a response is received
+	 *
+	 * @return self<T> returns the current form instance
 	 */
 	public function onResponse(Closure $onResponse) : self {
 		Utils::validateCallableSignature($this->getSignature(), $onResponse);
@@ -96,6 +108,7 @@ abstract class PocketForm implements Form {
 	 */
 	public function callOnResponse(Player $player, mixed $data) : void {
 		$responseClass = $this->getResponseClass();
+		/** @var class-string<T> $responseClass */
 		Utils::testValidInstance($responseClass, PocketFormResponse::class);
 		$response = new $responseClass($player, $this, $data);
 		$this->onResponseListener?->__invoke($response);
@@ -104,10 +117,11 @@ abstract class PocketForm implements Form {
 	/**
 	 * Set the onClose callback.
 	 *
-	 * @param Closure $onClose The callback to be executed when the form is closed without a response.
-	 *                         The callback must accept a Player parameter.
+	 * The callback should follow the signature: function(Player $player): void.
 	 *
-	 * @return self returns the current form instance
+	 * @param Closure(Player):void $onClose the callback to be executed when the form is closed without a response
+	 *
+	 * @return self<T> returns the current form instance
 	 */
 	public function onClose(Closure $onClose) : self {
 		Utils::validateCallableSignature(function (Player $player) : void {}, $onClose);
@@ -134,7 +148,7 @@ abstract class PocketForm implements Form {
 	/**
 	 * Serialize the form to an array suitable for JSON encoding.
 	 *
-	 * @return array the array representation of the form
+	 * @return array<string, mixed> the array representation of the form
 	 */
 	public function jsonSerialize() : array {
 		$components = $this->initComponents();

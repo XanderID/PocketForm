@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * Copyright (c) 2025-2025 XanderID
+ *
+ * For the full copyright and license information, please view
+ * the LICENSE file that was distributed with this source code.
+ *
+ * @see https://github.com/XanderID/PocketForm
+ */
+
 declare(strict_types=1);
 
 namespace XanderID\PocketForm;
@@ -8,6 +17,7 @@ use Closure;
 use pocketmine\player\Player;
 use pocketmine\utils\Utils as PMUtils;
 use XanderID\PocketForm\custom\CustomElement;
+use XanderID\PocketForm\custom\CustomForm;
 use XanderID\PocketForm\custom\element\Dropdown;
 use XanderID\PocketForm\custom\element\Input;
 use XanderID\PocketForm\custom\element\Label;
@@ -16,6 +26,9 @@ use XanderID\PocketForm\custom\element\StepSlider;
 use XanderID\PocketForm\custom\element\Toggle;
 use XanderID\PocketForm\custom\validator\TypeValidator;
 use XanderID\PocketForm\simple\SimpleFormResponse;
+use function count;
+use function is_numeric;
+use function is_string;
 
 /**
  * Contains utility methods for validation, array manipulation, and menu callable.
@@ -24,35 +37,70 @@ class Utils {
 	/**
 	 * Convert the value based on the specific CustomElement type.
 	 *
-	 * @param CustomElement $element the element for which the value is being processed
-	 * @param mixed         $value   the raw value from the form response
+	 * @param CustomElement         $element the element for which the value is being processed
+	 * @param bool|float|int|string $value   the raw value from the form response
 	 *
-	 * @return mixed the converted value
+	 * @return bool|int|string the converted value
 	 */
-	public static function customValue(CustomElement $element, mixed $value) : mixed {
+	public static function customValue(CustomElement $element, bool|float|int|string $value) : bool|int|string {
 		if ($element instanceof Input) {
 			$validator = $element->getValidator();
 			if ($validator instanceof TypeValidator) {
+				if (!is_string($value)) {
+					$value = (string) $value;
+				}
+
 				return $validator->parseText($value);
 			}
 		}
 
 		return match (true) {
-			$element instanceof Dropdown => (string) $element->getOptions()[$value],
-			$element instanceof Input => (string) $value,
+			$element instanceof Dropdown => (string) $element->getOptions()[(int) $value],
+			$element instanceof Input => is_string($value) ? $value : (string) $value,
 			$element instanceof Label => (string) $element->getLabel(),
-			$element instanceof Slider => (int) $value,
-			$element instanceof StepSlider => (int) $element->getStep()[$value],
+			$element instanceof Slider => is_numeric($value) ? (int) $value : (int) $value,
+			$element instanceof StepSlider => (int) $element->getStep()[(int) $value],
 			$element instanceof Toggle => (bool) $value,
-			default => $value,
+			default => throw new PocketFormException('Could not find Element'),
 		};
+	}
+
+	/**
+	 * Maps the raw CustomForm response data to align with the form's elements.
+	 *
+	 * In some versions (e.g. 1.21.70), Label elements are not included in the response data since they are non-interactive.
+	 *
+	 * @param array<int, Element>     $elements the list of form elements from the CustomForm
+	 * @param array<int, scalar|null> $data     the raw response data from the form
+	 *
+	 * @return array<int, scalar|null> the mapped response data, with `null` in place of Labels
+	 */
+	public static function customMap(array $elements, array $data) : array {
+		if (count($elements) === count($data)) {
+			return $data;
+		}
+
+		/** @var array<int, scalar|null> $mapped */
+		$mapped = [];
+		$valueIndex = 0;
+
+		foreach ($elements as $i => $element) {
+			if ($element instanceof Label) {
+				$mapped[$i] = null;
+			} else {
+				$mapped[$i] = $data[$valueIndex] ?? null;
+				++$valueIndex;
+			}
+		}
+
+		return $mapped;
 	}
 
 	/**
 	 * Validate the type of each value in an array using a provided closure.
 	 *
-	 * @param array   $array     the array whose values will be validated
-	 * @param Closure $validator a closure that accepts a value and validates it
+	 * @param list<mixed> $array     the array whose values will be validated
+	 * @param Closure     $validator a closure that accepts a value and validates it
 	 *
 	 * @return bool returns true if any value fails validation, otherwise false
 	 */
@@ -71,8 +119,8 @@ class Utils {
 	/**
 	 * Validate that all elements in an array are instances of Element.
 	 *
-	 * @param array  $elements the array of elements to validate
-	 * @param string $header   the error message prefix if validation fails
+	 * @param list<Element> $elements the array of elements to validate
+	 * @param string        $header   the error message prefix if validation fails
 	 *
 	 * @throws PocketFormException if any element is not an instance of Element
 	 */
@@ -85,25 +133,19 @@ class Utils {
 	/**
 	 * Create a callable for a menu form that maps button selections to callbacks.
 	 *
-	 * @param array $callables an array of callables corresponding to each button
+	 * @param list<callable> $callables an array of callables corresponding to each button
 	 *
 	 * @return Closure returns a closure that processes the form response
 	 *
 	 * @throws PocketFormException if any callable is invalid
 	 */
 	public static function createMenuCall(array $callables) : Closure {
-		if (self::validateArrayValueType($callables, function (callable $callable) {
-			// Dummy so that it is not fixed to void by PHP CS Fixer
-			return null;
-		})) {
+		if (self::validateArrayValueType($callables, function (callable $callable) : void {})) {
 			throw new PocketFormException('Failed to Build Closure: Callables array can only be callable!');
 		}
 
 		foreach ($callables as $callable) {
-			PMUtils::validateCallableSignature(function (Player $player) {
-				// Dummy so that it is not fixed to void by PHP CS Fixer
-				return null;
-			}, $callable);
+			PMUtils::validateCallableSignature(function (Player $player) : void {}, $callable);
 		}
 
 		$onResponse = function (SimpleFormResponse $response) use ($callables) : void {

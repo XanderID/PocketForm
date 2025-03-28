@@ -1,27 +1,39 @@
 <?php
 
+/*
+ * Copyright (c) 2025-2025 XanderID
+ *
+ * For the full copyright and license information, please view
+ * the LICENSE file that was distributed with this source code.
+ *
+ * @see https://github.com/XanderID/PocketForm
+ */
+
 declare(strict_types=1);
 
 namespace XanderID\PocketForm\custom\validator;
 
+use function gettype;
+use function is_scalar;
 use function preg_match;
 
 /**
  * A validator that checks if the input data matches a specified regular expression pattern.
  *
  * Example usage:
- * ```
+ * ```php
  * $email = new Input('Email', 'user@example.com');
  * $email->validator(RegexValidator::EMAIL());
  *
- * // If the user enters data that doesn't match the email pattern,
- * // a message "Please enter a valid email address." will be displayed above the input.
+ * // Or for a custom pattern:
+ * $validator = RegexValidator::create('/^[A-Z]+$/', 'Only uppercase letters are allowed.');
+ * $input->validator($validator);
  * ```
  */
 class RegexValidator extends Validator {
 	/**
-	 * @param string $pattern The regular expression pattern to validate against
-	 * @param string $error   The error message to return if validation fails
+	 * @param string $pattern the regular expression pattern to validate against
+	 * @param string $error   the error message to return if validation fails
 	 */
 	public function __construct(
 		protected string $pattern,
@@ -33,23 +45,40 @@ class RegexValidator extends Validator {
 	/**
 	 * Validate the given data against the regular expression pattern.
 	 *
-	 * @param mixed $data The data to validate
+	 * @param mixed $data the data to validate
 	 *
-	 * @return string|null Returns an error message if validation fails, or null if valid
+	 * @return string|null returns an error message if validation fails, or null if valid
+	 *
+	 * @throws \InvalidArgumentException if the data is not a scalar value
 	 */
 	public function validate(mixed $data) : ?string {
+		if (!is_scalar($data)) {
+			throw new \InvalidArgumentException('Expected scalar value to validate, got ' . gettype($data));
+		}
+
 		return !preg_match($this->pattern, (string) $data) ? $this->error() : null;
+	}
+
+	/**
+	 * Shortcut to create a new RegexValidator instance.
+	 *
+	 * @param string $pattern the regular expression pattern to validate against
+	 * @param string $error   the error message to return if validation fails
+	 *
+	 * @return self returns a new instance of RegexValidator
+	 */
+	public static function create(string $pattern, string $error = Validator::DEFAULT_ERROR) : self {
+		return new self($pattern, $error);
 	}
 
 	/**
 	 * Create an email validator.
 	 *
-	 * @param string $error The error message for invalid email addresses
+	 * @param string $error the error message for invalid email addresses
 	 *
-	 * @return self Returns a new instance of RegexValidator for email validation
+	 * @return self returns a new instance of RegexValidator for email validation
 	 */
 	public static function EMAIL(string $error = 'Please enter a valid email address.') : self {
-		// Regular expression pattern for validating email addresses
 		$emailPattern = '/^[\w\.\-]+@([\w\-]+\.)+[a-zA-Z]{2,7}$/';
 		return new self($emailPattern, $error);
 	}

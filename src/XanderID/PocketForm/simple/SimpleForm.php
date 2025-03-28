@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * Copyright (c) 2025-2025 XanderID
+ *
+ * For the full copyright and license information, please view
+ * the LICENSE file that was distributed with this source code.
+ *
+ * @see https://github.com/XanderID/PocketForm
+ */
+
 declare(strict_types=1);
 
 namespace XanderID\PocketForm\simple;
@@ -7,11 +16,16 @@ namespace XanderID\PocketForm\simple;
 use pocketmine\player\Player;
 use XanderID\PocketForm\modal\ModalFormResponse;
 use XanderID\PocketForm\PocketForm;
+use XanderID\PocketForm\PocketFormException;
 use XanderID\PocketForm\simple\element\Button;
 use XanderID\PocketForm\traits\Body;
+use function gettype;
+use function is_int;
 
 /**
  * Represents a simple form with a list of buttons.
+ *
+ * @extends PocketForm<SimpleFormResponse>
  */
 class SimpleForm extends PocketForm {
 	use Body;
@@ -47,11 +61,12 @@ class SimpleForm extends PocketForm {
 	/**
 	 * Initialize simple form components.
 	 *
-	 * @return array an associative array containing the form content
+	 * @return array<string, mixed> an associative array containing the form content
 	 */
 	protected function initComponents() : array {
 		return [
 			'content' => $this->body,
+			'buttons' => [],
 		];
 	}
 
@@ -62,6 +77,10 @@ class SimpleForm extends PocketForm {
 	 * @param mixed  $data   the raw response data
 	 */
 	public function callOnResponse(Player $player, mixed $data) : void {
+		if (!is_int($data)) {
+			throw new PocketFormException('Expected int got ' . gettype($data));
+		}
+
 		/** @var Button $selected */
 		$selected = $this->getElement($data);
 		if (null !== ($confirm = $selected->getConfirm())) {

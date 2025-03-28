@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * Copyright (c) 2025-2025 XanderID
+ *
+ * For the full copyright and license information, please view
+ * the LICENSE file that was distributed with this source code.
+ *
+ * @see https://github.com/XanderID/PocketForm
+ */
+
 declare(strict_types=1);
 
 namespace XanderID\PocketForm\simple;
@@ -12,10 +21,12 @@ use function is_int;
 
 /**
  * Processes the response data from a simple form.
+ *
+ * @extends PocketFormResponse<SimpleForm>
  */
 class SimpleFormResponse extends PocketFormResponse {
-	/** @var Button|null the button that was selected */
-	private ?Button $selected = null;
+	/** @var Button the button that was selected */
+	private Button $selected;
 
 	/**
 	 * Process the raw response data.

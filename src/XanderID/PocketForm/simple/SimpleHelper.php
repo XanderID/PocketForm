@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * Copyright (c) 2025-2025 XanderID
+ *
+ * For the full copyright and license information, please view
+ * the LICENSE file that was distributed with this source code.
+ *
+ * @see https://github.com/XanderID/PocketForm
+ */
+
 declare(strict_types=1);
 
 namespace XanderID\PocketForm\simple;
@@ -30,7 +39,7 @@ trait SimpleHelper {
 	/**
 	 * Add multiple buttons.
 	 *
-	 * @param array $buttons an array of button texts
+	 * @param list<string> $buttons an array of button texts
 	 *
 	 * @throws PocketFormException if any of the values in the array are not strings
 	 */

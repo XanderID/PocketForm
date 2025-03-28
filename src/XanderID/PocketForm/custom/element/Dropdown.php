@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * Copyright (c) 2025-2025 XanderID
+ *
+ * For the full copyright and license information, please view
+ * the LICENSE file that was distributed with this source code.
+ *
+ * @see https://github.com/XanderID/PocketForm
+ */
+
 declare(strict_types=1);
 
 namespace XanderID\PocketForm\custom\element;
@@ -13,9 +22,9 @@ use XanderID\PocketForm\Utils;
  */
 class Dropdown extends CustomElement {
 	/**
-	 * @param string   $label   the label for the dropdown
-	 * @param array    $options an array of options to display in the dropdown
-	 * @param int|null $default the default selected index
+	 * @param string       $label   the label for the dropdown
+	 * @param list<string> $options an array of options to display in the dropdown
+	 * @param int|null     $default the default selected index
 	 */
 	public function __construct(
 		string $label,
@@ -37,7 +46,7 @@ class Dropdown extends CustomElement {
 	/**
 	 * Get the dropdown options.
 	 *
-	 * @return array the list of options
+	 * @return list<string> the list of options
 	 */
 	public function getOptions() : array {
 		return $this->options;
@@ -46,7 +55,7 @@ class Dropdown extends CustomElement {
 	/**
 	 * Set the dropdown options.
 	 *
-	 * @param array $options the new list of options
+	 * @param list<string> $options the new list of options
 	 */
 	public function setOptions(array $options) : self {
 		$this->options = $options;
@@ -75,7 +84,7 @@ class Dropdown extends CustomElement {
 	/**
 	 * Perform pre-build checks for the dropdown.
 	 *
-	 * @throws PocketFormException if options are not all strings or default index is invalid
+	 * @throws PocketFormException if options are not all strings or the default index is invalid
 	 */
 	public function buildCheck() : void {
 		if (Utils::validateArrayValueType($this->options, function (string $option) : void {})) {
@@ -95,10 +104,14 @@ class Dropdown extends CustomElement {
 	/**
 	 * Build the dropdown element.
 	 *
-	 * @param array &$components The components array to add the dropdown to
+	 * @param array<string, list<mixed>> &$components The components array to add the dropdown to
 	 */
 	public function build(array &$components) : void {
-		$dropdown = ['type' => $this->getType(), 'text' => $this->label, 'options' => $this->options];
+		$dropdown = [
+			'type' => $this->getType(),
+			'text' => $this->label,
+			'options' => $this->options,
+		];
 		if ($this->default !== null) {
 			$dropdown['default'] = $this->default;
 		}

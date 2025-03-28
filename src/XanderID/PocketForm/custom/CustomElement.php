@@ -1,9 +1,19 @@
 <?php
 
+/*
+ * Copyright (c) 2025-2025 XanderID
+ *
+ * For the full copyright and license information, please view
+ * the LICENSE file that was distributed with this source code.
+ *
+ * @see https://github.com/XanderID/PocketForm
+ */
+
 declare(strict_types=1);
 
 namespace XanderID\PocketForm\custom;
 
+use XanderID\PocketForm\custom\element\Input;
 use XanderID\PocketForm\custom\validator\TypeValidator;
 use XanderID\PocketForm\Element;
 use XanderID\PocketForm\PocketFormException;
@@ -30,7 +40,7 @@ abstract class CustomElement extends Element {
 			return;
 		}
 
-		if (!($this instanceof \XanderID\PocketForm\custom\element\Input) && $validator instanceof TypeValidator) {
+		if (!($this instanceof Input) && $validator instanceof TypeValidator) {
 			throw new PocketFormException('This element cannot use TypeValidator!');
 		}
 	}

@@ -11,8 +11,8 @@ PocketForm is a powerful and flexible PHP library designed exclusively for creat
   - [Getting Started](#getting-started)
   - [Usage Examples](#usage-examples)
     - [Creating a Simple Menu Form](#creating-a-simple-menu-form)
-    - [Wiki](#wiki)
-  - [Whats News](#whats-news)
+    - [Docs](#docs)
+    - [Whats News](#whats-news)
 
 ## Features
 
@@ -31,8 +31,12 @@ PocketForm is a powerful and flexible PHP library designed exclusively for creat
 
 To install **PocketForm**, use Composer:
 
-```bash
-composer require xanderid/pocketform
+add PocketForm to the Required Depencies list in your project like this:
+
+```json
+"require": {
+    "xanderid/pocketform": "^1.0.2"
+  },
 ```
 
 Alternatively, clone or download the repository:
@@ -91,12 +95,11 @@ $form = PocketFormHelper::menu(
 $player->sendForm($form);
 ```
 
-### Wiki
+### Docs
 
-For additional documentation, please follow [this link](https://github.com/XanderID/PocketForm/wiki).
+For additional documentation, please follow [this link](https://github.com/XanderID/PocketForm/tree/docs).
 
 ### Whats News
-* Added Range Validator
-* Added Regex Validator
-* Fix Confirmation Bug
-* Throw Error when No Element on CustomForm
+
+- Refactor Code
+- Updated for 1.21.70

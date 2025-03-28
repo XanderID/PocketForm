@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * Copyright (c) 2025-2025 XanderID
+ *
+ * For the full copyright and license information, please view
+ * the LICENSE file that was distributed with this source code.
+ *
+ * @see https://github.com/XanderID/PocketForm
+ */
+
 declare(strict_types=1);
 
 namespace XanderID\PocketForm\custom\element;
@@ -73,7 +82,7 @@ class Input extends CustomElement {
 	/**
 	 * Build the input element.
 	 *
-	 * @param array &$components The components array to add the input to
+	 * @param array<string, list<mixed>> &$components The components array to add the input to
 	 */
 	public function build(array &$components) : void {
 		$input = ['type' => $this->getType(), 'text' => $this->label, 'placeholder' => $this->placeholder];

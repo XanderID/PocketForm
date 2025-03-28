@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * Copyright (c) 2025-2025 XanderID
+ *
+ * For the full copyright and license information, please view
+ * the LICENSE file that was distributed with this source code.
+ *
+ * @see https://github.com/XanderID/PocketForm
+ */
+
 declare(strict_types=1);
 
 namespace XanderID\PocketForm\simple\element;
@@ -76,10 +85,13 @@ class ButtonImage {
 	/**
 	 * Build the image data into the button array.
 	 *
-	 * @param array &$button The button array to add image data to
+	 * @param array<string, mixed> &$button The button array to add image data to
 	 */
 	public function build(array &$button) : void {
-		$button['image']['type'] = $this->getType();
-		$button['image']['data'] = $this->getUri();
+		$image = [
+			'type' => $this->getType(),
+			'data' => $this->getUri(),
+		];
+		$button['image'] = $image;
 	}
 }

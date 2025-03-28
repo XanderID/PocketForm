@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * Copyright (c) 2025-2025 XanderID
+ *
+ * For the full copyright and license information, please view
+ * the LICENSE file that was distributed with this source code.
+ *
+ * @see https://github.com/XanderID/PocketForm
+ */
+
 declare(strict_types=1);
 
 namespace XanderID\PocketForm;
@@ -16,10 +25,10 @@ class PocketFormHelper {
 	/**
 	 * Create a menu form (SimpleForm) with buttons.
 	 *
-	 * @param string  $title      the title of the form
-	 * @param string  $body       the body content of the form
-	 * @param array   $buttons    an array of button texts
-	 * @param Closure $onResponse the callback to handle the response
+	 * @param string       $title      the title of the form
+	 * @param string       $body       the body content of the form
+	 * @param list<string> $buttons    an array of button texts
+	 * @param Closure      $onResponse the callback to handle the response
 	 *
 	 * @return SimpleForm returns a SimpleForm instance
 	 *
@@ -63,10 +72,10 @@ class PocketFormHelper {
 	/**
 	 * Create a custom form (CustomForm) with the specified elements.
 	 *
-	 * @param string  $title      the title of the custom form
-	 * @param array   $elements   an array of elements to be added to the form
-	 * @param Closure $onResponse the callback to handle the custom form response
-	 * @param string  $submit     the text for the submit button (default is CustomForm::DEFAULT_SUBMIT)
+	 * @param string        $title      the title of the custom form
+	 * @param list<Element> $elements   an array of elements to be added to the form
+	 * @param Closure       $onResponse the callback to handle the custom form response
+	 * @param string        $submit     the text for the submit button (default is CustomForm::DEFAULT_SUBMIT)
 	 *
 	 * @return CustomForm returns a CustomForm instance
 	 *

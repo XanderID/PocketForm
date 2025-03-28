@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * Copyright (c) 2025-2025 XanderID
+ *
+ * For the full copyright and license information, please view
+ * the LICENSE file that was distributed with this source code.
+ *
+ * @see https://github.com/XanderID/PocketForm
+ */
+
 declare(strict_types=1);
 
 namespace XanderID\PocketForm\traits;
@@ -7,12 +16,13 @@ namespace XanderID\PocketForm\traits;
 use XanderID\PocketForm\Element;
 use XanderID\PocketForm\Utils;
 use function array_merge;
+use function array_values;
 
 /**
  * Provides methods for managing a collection of elements.
  */
 trait Elements {
-	/** @var list<Element> list of elements */
+	/** @var array<int, Element> list of elements */
 	protected array $elements = [];
 
 	/**
@@ -29,11 +39,13 @@ trait Elements {
 	/**
 	 * Set the entire array of elements.
 	 *
-	 * @param array $elements an array of Element instances
+	 * @param list<Element> $elements an array of Element instances
+	 *
+	 * @return static returns the current instance
 	 *
 	 * @throws \Exception if validation fails
 	 */
-	public function setElements(array $elements) : self {
+	public function setElements(array $elements) : static {
 		Utils::validateArrayElement($elements, 'Failed to set Elements');
 		$this->elements = $elements;
 		return $this;
@@ -42,7 +54,7 @@ trait Elements {
 	/**
 	 * Get all elements.
 	 *
-	 * @return list<Element> an array of Element instances
+	 * @return array<int, Element> an array of Element instances
 	 */
 	public function getElements() : array {
 		return $this->elements;
@@ -52,8 +64,10 @@ trait Elements {
 	 * Add an element to the collection.
 	 *
 	 * @param Element $element the element to add
+	 *
+	 * @return static returns the current instance
 	 */
-	public function addElement(Element $element) : self {
+	public function addElement(Element $element) : static {
 		$this->elements[] = $element;
 		return $this;
 	}
@@ -63,8 +77,10 @@ trait Elements {
 	 *
 	 * @param int     $index   the index to set
 	 * @param Element $element the element to set
+	 *
+	 * @return static returns the current instance
 	 */
-	public function setElement(int $index, Element $element) : self {
+	public function setElement(int $index, Element $element) : static {
 		$this->elements[$index] = $element;
 		return $this;
 	}
@@ -73,10 +89,13 @@ trait Elements {
 	 * Remove an element by its index.
 	 *
 	 * @param int $index the index of the element to remove
+	 *
+	 * @return static returns the current instance
 	 */
-	public function removeElement(int $index) : self {
+	public function removeElement(int $index) : static {
 		if (isset($this->elements[$index])) {
 			unset($this->elements[$index]);
+			$this->elements = array_values($this->elements);
 		}
 
 		return $this;
@@ -85,11 +104,13 @@ trait Elements {
 	/**
 	 * Merge additional elements into the current collection.
 	 *
-	 * @param array $elements an array of Element instances to merge
+	 * @param list<Element> $elements an array of Element instances to merge
+	 *
+	 * @return static returns the current instance
 	 *
 	 * @throws \Exception if validation fails
 	 */
-	public function mergeElement(array $elements) : self {
+	public function mergeElement(array $elements) : static {
 		Utils::validateArrayElement($elements, 'Failed to merge Elements');
 		$this->elements = array_merge($this->elements, $elements);
 		return $this;
@@ -98,7 +119,7 @@ trait Elements {
 	/**
 	 * Build all elements and add them to the components array.
 	 *
-	 * @param array &$components The components array to which elements will be added
+	 * @param array<string, mixed> &$components The components array to which elements will be added
 	 */
 	public function buildElements(array &$components) : void {
 		foreach ($this->getElements() as $element) {

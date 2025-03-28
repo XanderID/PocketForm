@@ -1,7 +1,6 @@
 {
   "name": "xanderid/pocketform",
   "description": "PocketForm is a simple forms Library for PocketMine-MP.",
-  "version": "1.0.1",
   "type": "library",
   "readme": "README.md",
   "license": "apache-2.0",

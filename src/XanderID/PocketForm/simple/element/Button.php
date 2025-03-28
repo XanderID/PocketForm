@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * Copyright (c) 2025-2025 XanderID
+ *
+ * For the full copyright and license information, please view
+ * the LICENSE file that was distributed with this source code.
+ *
+ * @see https://github.com/XanderID/PocketForm
+ */
+
 declare(strict_types=1);
 
 namespace XanderID\PocketForm\simple\element;
@@ -109,7 +118,7 @@ class Button extends Element {
 	/**
 	 * Build the button element.
 	 *
-	 * @param array &$components The components array to add the button to
+	 * @param array<string, list<mixed>> &$components The components array to add the button to
 	 */
 	public function build(array &$components) : void {
 		$button = ['text' => $this->text];

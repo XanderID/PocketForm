@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * Copyright (c) 2025-2025 XanderID
+ *
+ * For the full copyright and license information, please view
+ * the LICENSE file that was distributed with this source code.
+ *
+ * @see https://github.com/XanderID/PocketForm
+ */
+
 declare(strict_types=1);
 
 namespace XanderID\PocketForm\custom\validator;
@@ -48,6 +57,8 @@ class CustomValidator extends Validator {
 	 * @return string|null returns an error message if validation fails, or null if the data is valid
 	 */
 	public function validate(mixed $data) : ?string {
-		return ($this->validator)($data);
+		/** @var Closure $validator */
+		$validator = $this->validator;
+		return $validator($data);
 	}
 }

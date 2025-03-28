@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * Copyright (c) 2025-2025 XanderID
+ *
+ * For the full copyright and license information, please view
+ * the LICENSE file that was distributed with this source code.
+ *
+ * @see https://github.com/XanderID/PocketForm
+ */
+
 declare(strict_types=1);
 
 namespace XanderID\PocketForm\custom\element;
@@ -15,9 +24,9 @@ use function array_map;
  */
 class StepSlider extends CustomElement {
 	/**
-	 * @param string   $label   the label for the step slider
-	 * @param array    $step    an array of step values (each step is an integer)
-	 * @param int|null $default the default selected step index
+	 * @param string    $label   the label for the step slider
+	 * @param list<int> $step    an array of step values (each step is an integer)
+	 * @param int|null  $default the default selected step index
 	 */
 	public function __construct(
 		string $label,
@@ -30,7 +39,7 @@ class StepSlider extends CustomElement {
 	/**
 	 * Get the step values.
 	 *
-	 * @return array the array of step values
+	 * @return list<int> the array of step values
 	 */
 	public function getStep() : array {
 		return $this->step;
@@ -39,7 +48,7 @@ class StepSlider extends CustomElement {
 	/**
 	 * Set the step values.
 	 *
-	 * @param array $step the new array of step values
+	 * @param list<int> $step the new array of step values
 	 */
 	public function setStep(array $step) : self {
 		$this->step = $step;
@@ -77,8 +86,8 @@ class StepSlider extends CustomElement {
 	/**
 	 * Perform pre-build checks for the step slider.
 	 *
-	 * @throws PocketFormException if default index is out of bounds
-	 * @throws TypeError if step array is not valid
+	 * @throws PocketFormException if the default index is out of bounds
+	 * @throws TypeError if the step array is not valid
 	 */
 	public function buildCheck() : void {
 		if (Utils::validateArrayValueType($this->step, function (int $step) : void {})) {
@@ -98,11 +107,15 @@ class StepSlider extends CustomElement {
 	/**
 	 * Build the step slider element.
 	 *
-	 * @param array &$components The components array to add the step slider to
+	 * @param array<string, list<mixed>> &$components The components array to add the step slider to
 	 */
 	public function build(array &$components) : void {
 		$steps = array_map('strval', $this->step);
-		$slider = ['type' => $this->getType(), 'text' => $this->label, 'steps' => $steps];
+		$slider = [
+			'type' => $this->getType(),
+			'text' => $this->label,
+			'steps' => $steps,
+		];
 		if ($this->default !== null) {
 			$slider['default'] = $this->default;
 		}
