@@ -1,102 +1,87 @@
-# PocketForm
+# PocketForm Documentation
 
-PocketForm is a powerful and flexible PHP library designed exclusively for creating interactive forms for [PocketMine-MP](https://github.com/pmmp/PocketMine-MP). With an intuitive API and a modular architecture, PocketForm allows developers to easily build various types of forms—ranging from simple button menus to complex custom forms with dynamic validation and interactive elements—tailored for PocketMine environments.
+Welcome to the official documentation for **PocketForm**, a powerful PHP library designed for creating interactive forms within PocketMine-MP environments. This repository contains comprehensive guides and API references that help you integrate and use PocketForm effectively in your projects.
 
 ## Table of Contents
 
-- [PocketForm](#pocketform)
+- [PocketForm Documentation](#pocketform-documentation)
   - [Table of Contents](#table-of-contents)
-  - [Features](#features)
+  - [Introduction](#introduction)
+  - [Features Overview](#features-overview)
   - [Installation](#installation)
-  - [Getting Started](#getting-started)
-  - [Usage Examples](#usage-examples)
-    - [Creating a Simple Menu Form](#creating-a-simple-menu-form)
-    - [Wiki](#wiki)
-  - [Whats News](#whats-news)
+  - [Quick Start Guide](#quick-start-guide)
+  - [Documentation Files](#documentation-files)
+  - [Additional Resources](#additional-resources)
+  - [License](#license)
 
-## Features
+## Introduction
 
-- **Multiple Form Types:**  
-  Create various form types including simple, custom, and modal forms.
-- **Dynamic Form Elements:**  
-  Add interactive elements such as inputs, dropdowns, sliders, step sliders, toggles, and labels.
-- **Custom Validation:**  
-  Use built-in validators or define your own using closures.
-- **Event Handling:**  
-  Easily attach callback functions for response handling (`onResponse`), form closing (`onClose`), and button clicks (`onClick`).
-- **Extensible Architecture:**  
-  Leverage traits and a modular design to extend and customize the library.
+PocketForm is a flexible PHP library exclusively designed to create interactive forms for PocketMine-MP servers. With its intuitive API and modular architecture, PocketForm simplifies the process of building forms—ranging from basic menus to complex custom interfaces with dynamic validation and interactive elements.
+
+## Features Overview
+
+- **Multiple Form Types:** Easily create simple, modal, and custom forms.
+- **Dynamic Elements:** Add inputs, dropdowns, sliders, toggles, and labels to enhance interactivity.
+- **Custom Validation:** Implement built-in validators or create your own using closures.
+- **Event Handling:** Attach callbacks for form responses, closures, and button interactions.
+- **Extensible Architecture:** Utilize traits and a modular design for further customization.
 
 ## Installation
 
-To install **PocketForm**, use Composer:
+PocketForm can be installed via Composer by adding the following to your project's `composer.json`:
 
-```bash
-composer require xanderid/pocketform
+```json
+"require": {
+    "xanderid/pocketform": "^1.0.2"
+}
 ```
 
-Alternatively, clone or download the repository:
+Alternatively, you can clone the repository using Git:
 
 ```bash
 git clone https://github.com/XanderID/PocketForm.git
 ```
 
-## Getting Started
+## Quick Start Guide
 
-After installation, you can start creating forms immediately. PocketForm provides helper classes and traits that simplify form creation, element management, and response handling.
-
-## Usage Examples
-
-### Creating a Simple Menu Form
-
-The SimpleForm is ideal for creating menu-based interfaces where the player selects from a list of buttons.
+To quickly get started, you can create a simple menu form using the PocketForm helper:
 
 ```php
 use XanderID\PocketForm\PocketFormHelper;
 use XanderID\PocketForm\simple\SimpleFormResponse;
 
-// Create a simple menu form with a title, body, and button options.
 $form = PocketFormHelper::menu(
     'Main Menu',
-    'Please select an option:',
+    'Please choose an option:',
     ['Play', 'Settings', 'Exit'],
     function (SimpleFormResponse $response) {
         $player = $response->getPlayer();
-        // Process button selection using $response->getSelected()
+        // Handle the player's selection here.
     }
 );
 
-// Send the form to the player.
 $player->sendForm($form);
 ```
 
-Or you can use the Callable Builder:
+This snippet demonstrates how straightforward it is to set up a menu form. For further details and examples, please refer to the individual documentation files listed below.
 
-```php
-use XanderID\PocketForm\PocketFormHelper;
-use XanderID\PocketForm\Utils;
-use pocketmine\player\Player;
+## Documentation Files
 
-$form = PocketFormHelper::menu(
-    'Main Menu',
-    'Please select an option:',
-    ['Play', 'Settings', 'Exit'],
-    Utils::createMenuCall([
-        fn(Player $player) => $this->serverList($player),
-        fn(Player $player) => $this->serverSettings($player)
-    ])
-);
+This repository is organized into several key documentation files, each covering a different aspect of PocketForm:
 
-// Send the form to the player.
-$player->sendForm($form);
-```
+- **[SimpleForm.md](SimpleForm.md):** Detailed instructions on implementing and using Simple Forms for basic menu interfaces.
+- **[ModalForm.md](ModalForm.md):** A guide on creating Modal Forms for binary choices, such as confirmation dialogs.
+- **[CustomForm.md](CustomForm.md):** Learn how to build Custom Forms that combine various interactive elements like inputs, toggles, and dropdowns.
+- **[Confirmation.md](Confirmation.md):** Step-by-step guide for using Confirmation Forms to validate critical actions.
+- **[Validator.md](Validator.md):** A comprehensive look at applying both built-in and custom validators to form inputs.
 
-### Wiki
+## Additional Resources
 
-For additional documentation, please follow [this link](https://github.com/XanderID/PocketForm/wiki).
+- **GitHub Repository:** Stay updated with the latest changes by visiting the [PocketForm GitHub page](https://github.com/XanderID/PocketForm).
 
-### Whats News
-* Added Range Validator
-* Added Regex Validator
-* Fix Confirmation Bug
-* Throw Error when No Element on CustomForm
+## License
+
+PocketForm is released under the MIT License. See the [LICENSE](LICENSE) file for more information.
+
+---
+I hope this documentation helps you integrate PocketForm seamlessly into your projects. For any questions or further assistance, please feel free to reach out via discord or open an issue on GitHub.
