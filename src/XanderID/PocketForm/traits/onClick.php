@@ -41,7 +41,7 @@ trait onClick {
 	 * @return bool true if an onClick callback is set, false otherwise
 	 */
 	public function isOnClick() : bool {
-		return null !== $this->onClickListener;
+		return $this->onClickListener !== null;
 	}
 
 	/**

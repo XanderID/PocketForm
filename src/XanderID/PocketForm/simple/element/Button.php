@@ -16,6 +16,7 @@ namespace XanderID\PocketForm\simple\element;
 use XanderID\PocketForm\Element;
 use XanderID\PocketForm\traits\Confirm;
 use XanderID\PocketForm\traits\onClick;
+use XanderID\PocketForm\Utils;
 
 /**
  * Represents a button element within a simple form.
@@ -40,12 +41,21 @@ class Button extends Element {
 	) {}
 
 	/**
+	 * Returns the supported form type for this element.
+	 *
+	 * @return array<string> The supported form type
+	 */
+	public function supportForm() : array {
+		return [Utils::FORM_TYPES[0]];
+	}
+
+	/**
 	 * Get the button ID.
 	 *
 	 * @return mixed returns the custom ID if set; otherwise, the internal ID
 	 */
 	public function getId() : mixed {
-		return null !== $this->customId ? $this->customId : $this->id;
+		return $this->customId !== null ? $this->customId : $this->id;
 	}
 
 	/**

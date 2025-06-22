@@ -11,19 +11,32 @@
 
 declare(strict_types=1);
 
-namespace XanderID\PocketForm\custom\element;
+namespace XanderID\PocketForm\element;
 
-use XanderID\PocketForm\custom\CustomElement;
+use XanderID\PocketForm\traits\FormLabel;
+use XanderID\PocketForm\Utils;
 
 /**
  * Represents a label element used to display static text.
  */
-class Label extends CustomElement {
+class Label extends ReadonlyElement {
+	use FormLabel;
+
 	/**
 	 * @param string $label the text for the label element
 	 */
 	public function __construct(string $label) {
 		$this->setLabel($label);
+	}
+
+	/**
+	 * Returns the supported form type.
+	 * Only works in CustomForm due to lack of key support in SimpleForm.
+	 *
+	 * @return array<string> The supported form type
+	 */
+	public function supportForm() : array {
+		return [Utils::FORM_TYPES[2]];
 	}
 
 	/**

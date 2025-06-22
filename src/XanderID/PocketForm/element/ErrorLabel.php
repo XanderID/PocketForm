@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-namespace XanderID\PocketForm\custom\element;
+namespace XanderID\PocketForm\element;
 
 /**
  * Represents an error label element, typically used to display validation errors.

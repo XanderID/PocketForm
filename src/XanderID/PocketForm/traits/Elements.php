@@ -17,6 +17,7 @@ use XanderID\PocketForm\Element;
 use XanderID\PocketForm\Utils;
 use function array_merge;
 use function array_values;
+use function in_array;
 
 /**
  * Provides methods for managing a collection of elements.
@@ -120,9 +121,16 @@ trait Elements {
 	 * Build all elements and add them to the components array.
 	 *
 	 * @param array<string, mixed> &$components The components array to which elements will be added
+	 *
+	 * @internal
 	 */
 	public function buildElements(array &$components) : void {
 		foreach ($this->getElements() as $element) {
+			$formType = $this->getType();
+			if (!in_array($formType, $element->supportForm(), true)) {
+				$element->buildError('You cannot use this element with the selected form type: ' . $formType);
+			}
+
 			$element->buildCheck();
 			$element->build($components);
 		}

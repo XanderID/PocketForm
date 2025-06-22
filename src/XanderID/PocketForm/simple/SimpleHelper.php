@@ -13,6 +13,9 @@ declare(strict_types=1);
 
 namespace XanderID\PocketForm\simple;
 
+use XanderID\PocketForm\element\Divider;
+use XanderID\PocketForm\element\Header;
+use XanderID\PocketForm\element\Label;
 use XanderID\PocketForm\PocketFormException;
 use XanderID\PocketForm\simple\element\Button;
 use XanderID\PocketForm\simple\element\ButtonImage;
@@ -30,7 +33,7 @@ trait SimpleHelper {
 	 * @param string   $imageUri  the URI for the button image
 	 */
 	public function addButton(string $text, ?int $imageType = null, string $imageUri = '') : self {
-		$image = null !== $imageType ? ButtonImage::create($imageType, $imageUri) : null;
+		$image = $imageType !== null ? ButtonImage::create($imageType, $imageUri) : null;
 		$button = new Button($text, $image);
 		$this->addElement($button);
 		return $this;
@@ -53,6 +56,47 @@ trait SimpleHelper {
 			$this->addElement($button);
 		}
 
+		return $this;
+	}
+
+	/**
+	 * Add a label element.
+	 *
+	 * @param string $label the text for the label element
+	 */
+	public function addLabel(string $label) : self {
+		$labelElement = new Label($label);
+		$this->addElement($labelElement);
+		return $this;
+	}
+
+	/**
+	 * Add a header element.
+	 *
+	 * This is a non-interactive element used for labeling sections.
+	 * WARNING: Only supported in Minecraft version 1.21.70 and above.
+	 *
+	 * @param string $text the text to display in the header
+	 *
+	 * @return $this
+	 */
+	public function addHeader(string $text) : self {
+		$header = new Header($text);
+		$this->addElement($header);
+		return $this;
+	}
+
+	/**
+	 * Add a divider element.
+	 *
+	 * This is a non-interactive horizontal line used to separate sections.
+	 * WARNING: Only supported in Minecraft version 1.21.70 and above.
+	 *
+	 * @return $this
+	 */
+	public function addDivider() : self {
+		$divider = new Divider();
+		$this->addElement($divider);
 		return $this;
 	}
 }

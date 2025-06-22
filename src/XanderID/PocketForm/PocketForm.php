@@ -139,7 +139,7 @@ abstract class PocketForm implements Form {
 	 */
 	public function handleResponse(Player $player, mixed $data) : void {
 		match (true) {
-			null === $data => $this->onCloseListener?->__invoke($player),
+			$data === null => $this->onCloseListener?->__invoke($player),
 			is_bool($data) || is_int($data) || is_array($data) => $this->callOnResponse($player, $data),
 			default => throw new PocketFormException('Expected bool, int, array, or null, got ' . gettype($data)),
 		};

@@ -14,8 +14,14 @@ declare(strict_types=1);
 namespace XanderID\PocketForm\custom;
 
 use pocketmine\player\Player;
-use XanderID\PocketForm\custom\element\ErrorLabel;
+use XanderID\PocketForm\custom\element\Dropdown;
 use XanderID\PocketForm\custom\element\Input;
+use XanderID\PocketForm\custom\element\Slider;
+use XanderID\PocketForm\custom\element\StepSlider;
+use XanderID\PocketForm\custom\element\Toggle;
+use XanderID\PocketForm\element\ErrorLabel;
+use XanderID\PocketForm\element\Label;
+use XanderID\PocketForm\element\ReadonlyElement;
 use XanderID\PocketForm\modal\ModalFormResponse;
 use XanderID\PocketForm\PocketForm;
 use XanderID\PocketForm\PocketFormException;
@@ -99,17 +105,18 @@ class CustomForm extends PocketForm {
 		$isError = false;
 
 		foreach ($mapData as $index => $value) {
-			/** @var CustomElement $element */
+			/** @var CustomElement|Label $element */
 			$element = $elements[$index];
-			if (null === $value) {
+			if ($element instanceof ReadonlyElement) {
 				continue;
 			}
 
+			/** @var bool|float|int|string $value */
 			$parsed = Utils::customValue($element, $value);
 			$validated = $element->validate($parsed);
 			$indexInt = (int) $index;
 			$previous = $elements[$indexInt - 1] ?? null;
-			if (null !== $validated) {
+			if ($validated !== null) {
 				if (!$previous instanceof ErrorLabel) {
 					$errorLabels[$indexInt] = new ErrorLabel($validated);
 				}
@@ -125,11 +132,10 @@ class CustomForm extends PocketForm {
 			$element->setValue($parsed);
 
 			/**
-			 * This is actually a CustomElement except Label, Used for Dummy Error Only.
-			 *
-			 * @var Input $element
+			 * @var Dropdown|Input|Slider|StepSlider|Toggle $element
+			 * @var bool|int|string $value
 			 */
-			$element->setDefault((string) $value);
+			$element->setDefault($value);
 		}
 
 		if ($isError) {
@@ -177,10 +183,11 @@ class CustomForm extends PocketForm {
 	 *
 	 * @return array<string, mixed> the array representation of the form
 	 *
-	 * @throws PocketFormException if there is no element at all
+	 * @throws PocketFormException If the CustomForm cannot be built
 	 */
 	public function jsonSerialize() : array {
-		if (count($this->getElements()) < 1) {
+		$elements = $this->getElements();
+		if (count($elements) < 1) {
 			throw new PocketFormException('Failed to build Custom Form: Please add at least 1 element');
 		}
 

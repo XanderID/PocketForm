@@ -17,14 +17,14 @@ use Closure;
 use pocketmine\player\Player;
 use pocketmine\utils\Utils as PMUtils;
 use XanderID\PocketForm\custom\CustomElement;
-use XanderID\PocketForm\custom\CustomForm;
 use XanderID\PocketForm\custom\element\Dropdown;
 use XanderID\PocketForm\custom\element\Input;
-use XanderID\PocketForm\custom\element\Label;
 use XanderID\PocketForm\custom\element\Slider;
 use XanderID\PocketForm\custom\element\StepSlider;
 use XanderID\PocketForm\custom\element\Toggle;
 use XanderID\PocketForm\custom\validator\TypeValidator;
+use XanderID\PocketForm\element\Label;
+use XanderID\PocketForm\element\ReadonlyElement;
 use XanderID\PocketForm\simple\SimpleFormResponse;
 use function count;
 use function is_numeric;
@@ -35,14 +35,28 @@ use function is_string;
  */
 class Utils {
 	/**
+	 * List of supported form types.
+	 *
+	 * Supported types include:
+	 * - 'form'         : SimpleForm (basic list selection)
+	 * - 'modal'        : ModalForm (Yes/No dialog)
+	 * - 'custom_form'  : CustomForm (form with multiple input elements)
+	 *
+	 * These types are typically used for UI generation or form validation logic.
+	 *
+	 * @var array<string>
+	 */
+	public const FORM_TYPES = ['form', 'modal', 'custom_form'];
+
+	/**
 	 * Convert the value based on the specific CustomElement type.
 	 *
-	 * @param CustomElement         $element the element for which the value is being processed
+	 * @param CustomElement|Label   $element the element for which the value is being processed
 	 * @param bool|float|int|string $value   the raw value from the form response
 	 *
 	 * @return bool|int|string the converted value
 	 */
-	public static function customValue(CustomElement $element, bool|float|int|string $value) : bool|int|string {
+	public static function customValue(CustomElement|Label $element, bool|float|int|string $value) : bool|int|string {
 		if ($element instanceof Input) {
 			$validator = $element->getValidator();
 			if ($validator instanceof TypeValidator) {
@@ -85,7 +99,7 @@ class Utils {
 		$valueIndex = 0;
 
 		foreach ($elements as $i => $element) {
-			if ($element instanceof Label) {
+			if ($element instanceof ReadonlyElement) {
 				$mapped[$i] = null;
 			} else {
 				$mapped[$i] = $data[$valueIndex] ?? null;
@@ -145,7 +159,7 @@ class Utils {
 		}
 
 		foreach ($callables as $callable) {
-			PMUtils::validateCallableSignature(function (Player $player) : void {}, $callable);
+			PMUtils::validateCallableSignature(fn (Player $player) => null, $callable);
 		}
 
 		$onResponse = function (SimpleFormResponse $response) use ($callables) : void {

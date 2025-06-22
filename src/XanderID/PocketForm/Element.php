@@ -18,6 +18,15 @@ namespace XanderID\PocketForm;
  */
 abstract class Element {
 	/**
+	 * Returns the supported form type for this element.
+	 *
+	 * @return array<string> The supported form type
+	 */
+	public function supportForm() : array {
+		return [];
+	}
+
+	/**
 	 * Get the type of the element.
 	 *
 	 * @return string|null The element type (e.g., "input", "dropdown") or null if not defined.
@@ -28,6 +37,8 @@ abstract class Element {
 	 * Build the element into the components array.
 	 *
 	 * @param array<string, mixed> &$components The array to which the element's component will be appended
+	 *
+	 * @internal
 	 */
 	abstract public function build(array &$components) : void;
 
@@ -44,8 +55,10 @@ abstract class Element {
 	 * @param string $error the error message describing the build failure
 	 *
 	 * @throws PocketFormException always thrown to indicate a build error
+	 *
+	 * @internal
 	 */
-	protected function buildError(string $error) : void {
+	public function buildError(string $error) : void {
 		$elementName = (new \ReflectionClass(static::class))->getShortName();
 		throw new PocketFormException('Failed to build ' . $elementName . ' Element: ' . $error);
 	}

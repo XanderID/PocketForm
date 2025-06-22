@@ -35,7 +35,7 @@ add PocketForm to the Required Depencies list in your project like this:
 
 ```json
 "require": {
-    "xanderid/pocketform": "^1.0.2"
+    "xanderid/pocketform": "^1.0.3"
   },
 ```
 
@@ -101,5 +101,5 @@ For additional documentation, please follow [this link](https://github.com/Xande
 
 ### Whats News
 
-- Refactor Code
-- Updated for 1.21.70
+- Fix Bug
+- Added New Element Divider and Header

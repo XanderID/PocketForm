@@ -15,10 +15,12 @@ namespace XanderID\PocketForm\custom;
 
 use XanderID\PocketForm\custom\element\Dropdown;
 use XanderID\PocketForm\custom\element\Input;
-use XanderID\PocketForm\custom\element\Label;
 use XanderID\PocketForm\custom\element\Slider;
 use XanderID\PocketForm\custom\element\StepSlider;
 use XanderID\PocketForm\custom\element\Toggle;
+use XanderID\PocketForm\element\Divider;
+use XanderID\PocketForm\element\Header;
+use XanderID\PocketForm\element\Label;
 
 /**
  * Provides helper methods to add various custom elements to a form.
@@ -98,6 +100,36 @@ trait CustomHelper {
 	public function addToggle(string $label, ?bool $default = null) : self {
 		$toggle = new Toggle($label, $default);
 		$this->addElement($toggle);
+		return $this;
+	}
+
+	/**
+	 * Add a header element.
+	 *
+	 * This is a non-interactive element used for labeling sections.
+	 * WARNING: Only supported in Minecraft version 1.21.70 and above.
+	 *
+	 * @param string $text the text to display in the header
+	 *
+	 * @return $this
+	 */
+	public function addHeader(string $text) : self {
+		$header = new Header($text);
+		$this->addElement($header);
+		return $this;
+	}
+
+	/**
+	 * Add a divider element.
+	 *
+	 * This is a non-interactive horizontal line used to separate sections.
+	 * WARNING: Only supported in Minecraft version 1.21.70 and above.
+	 *
+	 * @return $this
+	 */
+	public function addDivider() : self {
+		$divider = new Divider();
+		$this->addElement($divider);
 		return $this;
 	}
 }

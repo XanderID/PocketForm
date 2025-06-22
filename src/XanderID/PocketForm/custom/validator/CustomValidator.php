@@ -43,9 +43,7 @@ class CustomValidator extends Validator {
 	 *                           or null if the data is valid
 	 */
 	public function __construct(Closure $validator) {
-		Utils::validateCallableSignature(function ($data) : ?string {
-			return null;
-		}, $validator);
+		Utils::validateCallableSignature(fn ($data) : ?string => null, $validator);
 		parent::__construct($validator);
 	}
 
