@@ -10,7 +10,7 @@
   },
   "autoload": {
     "psr-4": {
-      "XanderID\\PocketForm\\": "src/"
+      "XanderID\\PocketForm\\": "/src/XanderID/PocketForm"
     }
   },
   "authors": [
