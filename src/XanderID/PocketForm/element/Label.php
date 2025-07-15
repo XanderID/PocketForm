@@ -19,7 +19,7 @@ use XanderID\PocketForm\Utils;
 /**
  * Represents a label element used to display static text.
  */
-class Label extends ReadonlyElement {
+class Label extends UniversalElement implements ReadonlyElement {
 	use FormLabel;
 
 	/**
@@ -30,13 +30,22 @@ class Label extends ReadonlyElement {
 	}
 
 	/**
+	 * Creates a new Label element.
+	 *
+	 * @param string $label the text for the label element
+	 */
+	public static function create(string $label) : self {
+		return new self($label);
+	}
+
+	/**
 	 * Returns the supported form type.
 	 * Only works in CustomForm due to lack of key support in SimpleForm.
 	 *
 	 * @return array<string> The supported form type
 	 */
 	public function supportForm() : array {
-		return [Utils::FORM_TYPES[2]];
+		return [Utils::FORM_TYPES[0], Utils::FORM_TYPES[2]];
 	}
 
 	/**
@@ -51,10 +60,10 @@ class Label extends ReadonlyElement {
 	/**
 	 * Build the label element.
 	 *
-	 * @param array<string, list<mixed>> &$components The components array to add the label to
+	 * @param array<string, list<array<string, mixed>>> &$components The components array to add the label to
 	 */
 	public function build(array &$components) : void {
 		$label = ['type' => $this->getType(), 'text' => $this->label];
-		$components['content'][] = $label;
+		$this->initBuild($components, $label);
 	}
 }

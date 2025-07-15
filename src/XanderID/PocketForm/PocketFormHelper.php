@@ -15,7 +15,9 @@ namespace XanderID\PocketForm;
 
 use Closure;
 use XanderID\PocketForm\custom\CustomForm;
+use XanderID\PocketForm\element\Element;
 use XanderID\PocketForm\modal\ModalForm;
+use XanderID\PocketForm\simple\element\Button;
 use XanderID\PocketForm\simple\SimpleForm;
 
 /**
@@ -27,24 +29,22 @@ class PocketFormHelper {
 	 *
 	 * @param string       $title      the title of the form
 	 * @param string       $body       the body content of the form
-	 * @param list<string> $buttons    an array of button texts
+	 * @param list<Button> $buttons    an array of Button instance
 	 * @param Closure      $onResponse the callback to handle the response
 	 *
 	 * @return SimpleForm returns a SimpleForm instance
 	 *
-	 * @throws PocketFormException if the buttons array contains non-string values
+	 * @throws PocketFormException if any value in the $buttons array is not a Button instance
 	 */
 	public static function menu(string $title, string $body, array $buttons, Closure $onResponse) : SimpleForm {
-		if (Utils::validateArrayValueType($buttons, function (string $button) : void {})) {
-			throw new PocketFormException('Failed to build buttons Element: Buttons array can only be strings!');
+		if (Utils::validateArrayValueType($buttons, function (Button $button) : void {})) {
+			throw new PocketFormException('Failed to build buttons Element: Buttons array can only be Button instances!');
 		}
 
 		$form = new SimpleForm($title);
 		$form->setBody($body);
 		$form->onResponse($onResponse);
-		foreach ($buttons as $text) {
-			$form->addButton($text);
-		}
+		$form->mergeElements($buttons);
 
 		return $form;
 	}

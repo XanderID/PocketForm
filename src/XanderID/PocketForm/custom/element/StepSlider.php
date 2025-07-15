@@ -24,16 +24,31 @@ use function array_map;
  */
 class StepSlider extends CustomElement {
 	/**
-	 * @param string    $label   the label for the step slider
-	 * @param list<int> $step    an array of step values (each step is an integer)
-	 * @param int|null  $default the default selected step index
+	 * @param string      $label   the label for the step slider
+	 * @param list<int>   $step    an array of step values (each step is an integer)
+	 * @param int|null    $default the default selected step index (optional)
+	 * @param string|null $tooltip tooltip shown on hover (optional)
 	 */
 	public function __construct(
 		string $label,
 		protected array $step,
-		protected ?int $default = null
+		protected ?int $default = null,
+		?string $tooltip = null
 	) {
 		$this->setLabel($label);
+		$this->setTooltip($tooltip);
+	}
+
+	/**
+	 * Creates a new StepSlider element.
+	 *
+	 * @param string      $label   the label for the step slider
+	 * @param list<int>   $step    an array of step values (each step is an integer)
+	 * @param int|null    $default the default selected step index (optional)
+	 * @param string|null $tooltip tooltip shown on hover (optional)
+	 */
+	public static function create(string $label, array $step, ?int $default = null, ?string $tooltip = null) : self {
+		return new self($label, $step, $default, $tooltip);
 	}
 
 	/**
@@ -107,7 +122,7 @@ class StepSlider extends CustomElement {
 	/**
 	 * Build the step slider element.
 	 *
-	 * @param array<string, list<mixed>> &$components The components array to add the step slider to
+	 * @param array<string, list<array<string, mixed>>> &$components The components array to add the step slider to
 	 */
 	public function build(array &$components) : void {
 		$steps = array_map('strval', $this->step);
@@ -118,6 +133,10 @@ class StepSlider extends CustomElement {
 		];
 		if ($this->default !== null) {
 			$slider['default'] = $this->default;
+		}
+
+		if ($this->tooltip !== null) {
+			$slider['tooltip'] = $this->tooltip;
 		}
 
 		$components['content'][] = $slider;

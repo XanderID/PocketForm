@@ -25,7 +25,7 @@ trait Body {
 	 *
 	 * @param string $body the content to set
 	 */
-	public function setBody(string $body) : self {
+	public function setBody(string $body) : static {
 		$this->body = $body;
 		return $this;
 	}

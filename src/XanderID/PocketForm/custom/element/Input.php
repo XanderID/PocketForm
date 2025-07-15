@@ -22,14 +22,29 @@ class Input extends CustomElement {
 	/**
 	 * @param string      $label       the label for the input field
 	 * @param string      $placeholder the placeholder text for the input
-	 * @param string|null $default     the default value for the input
+	 * @param string|null $default     the default value for the input (optional)
+	 * @param string|null $tooltip     tooltip shown on hover (optional)
 	 */
 	public function __construct(
 		string $label,
 		protected string $placeholder = '',
-		protected ?string $default = null
+		protected ?string $default = null,
+		?string $tooltip = null
 	) {
 		$this->setLabel($label);
+		$this->setTooltip($tooltip);
+	}
+
+	/**
+	 * Creates a new Input element.
+	 *
+	 * @param string      $label       the label for the input field
+	 * @param string      $placeholder the placeholder text for the input
+	 * @param string|null $default     the default value for the input (optional)
+	 * @param string|null $tooltip     tooltip shown on hover (optional)
+	 */
+	public static function create(string $label, string $placeholder = '', ?string $default = null, ?string $tooltip = null) : self {
+		return new self($label, $placeholder, $default, $tooltip);
 	}
 
 	/**
@@ -82,12 +97,16 @@ class Input extends CustomElement {
 	/**
 	 * Build the input element.
 	 *
-	 * @param array<string, list<mixed>> &$components The components array to add the input to
+	 * @param array<string, list<array<string, mixed>>> &$components The components array to add the input to
 	 */
 	public function build(array &$components) : void {
 		$input = ['type' => $this->getType(), 'text' => $this->label, 'placeholder' => $this->placeholder];
 		if ($this->default !== null) {
 			$input['default'] = $this->default;
+		}
+
+		if ($this->tooltip !== null) {
+			$input['tooltip'] = $this->tooltip;
 		}
 
 		$components['content'][] = $input;

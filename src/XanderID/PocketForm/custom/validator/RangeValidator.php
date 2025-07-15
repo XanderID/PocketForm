@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace XanderID\PocketForm\custom\validator;
 
+use pocketmine\utils\TextFormat;
 use function is_numeric;
 
 /**
@@ -44,7 +45,7 @@ class RangeValidator extends Validator {
 	}
 
 	/**
-	 * Create a Range Validator.
+	 * Creates a new RangeValidator instance.
 	 *
 	 * @param int    $min   The minimum acceptable value (inclusive)
 	 * @param int    $max   The maximum acceptable value (inclusive)
@@ -69,10 +70,10 @@ class RangeValidator extends Validator {
 	 */
 	public function validate(mixed $data) : ?string {
 		if (!is_numeric($data)) {
-			return 'The input must be a number.';
+			return TextFormat::RED . 'The input must be a number.';
 		}
 
-		$value = (float) $data;
+		$value = (int) $data;
 		if ($value < $this->min || $value > $this->max) {
 			return $this->error();
 		}

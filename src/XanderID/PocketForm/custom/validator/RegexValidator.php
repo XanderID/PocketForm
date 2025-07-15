@@ -43,6 +43,18 @@ class RegexValidator extends Validator {
 	}
 
 	/**
+	 * Creates a new RegexValidator instance.
+	 *
+	 * @param string $pattern the regular expression pattern to validate against
+	 * @param string $error   the error message to return if validation fails
+	 *
+	 * @return self returns a new instance of RegexValidator
+	 */
+	public static function create(string $pattern, string $error = Validator::DEFAULT_ERROR) : self {
+		return new self($pattern, $error);
+	}
+
+	/**
 	 * Validate the given data against the regular expression pattern.
 	 *
 	 * @param mixed $data the data to validate
@@ -57,18 +69,6 @@ class RegexValidator extends Validator {
 		}
 
 		return !preg_match($this->pattern, (string) $data) ? $this->error() : null;
-	}
-
-	/**
-	 * Shortcut to create a new RegexValidator instance.
-	 *
-	 * @param string $pattern the regular expression pattern to validate against
-	 * @param string $error   the error message to return if validation fails
-	 *
-	 * @return self returns a new instance of RegexValidator
-	 */
-	public static function create(string $pattern, string $error = Validator::DEFAULT_ERROR) : self {
-		return new self($pattern, $error);
 	}
 
 	/**

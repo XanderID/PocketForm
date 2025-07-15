@@ -23,6 +23,7 @@ use XanderID\PocketForm\custom\element\Slider;
 use XanderID\PocketForm\custom\element\StepSlider;
 use XanderID\PocketForm\custom\element\Toggle;
 use XanderID\PocketForm\custom\validator\TypeValidator;
+use XanderID\PocketForm\element\Element;
 use XanderID\PocketForm\element\Label;
 use XanderID\PocketForm\element\ReadonlyElement;
 use XanderID\PocketForm\simple\SimpleFormResponse;

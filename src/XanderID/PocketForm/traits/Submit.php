@@ -28,7 +28,7 @@ trait Submit {
 	 *
 	 * @param string $submit the new submit text
 	 */
-	public function setSubmit(string $submit) : self {
+	public function setSubmit(string $submit) : static {
 		$this->submit = $submit;
 		return $this;
 	}
@@ -38,7 +38,7 @@ trait Submit {
 	 *
 	 * @param string $cancel the new cancel text
 	 */
-	public function setCancel(string $cancel) : self {
+	public function setCancel(string $cancel) : static {
 		$this->cancel = $cancel;
 		return $this;
 	}

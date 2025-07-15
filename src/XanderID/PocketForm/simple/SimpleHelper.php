@@ -32,7 +32,7 @@ trait SimpleHelper {
 	 * @param int|null $imageType the image type (0 for PATH, otherwise URL)
 	 * @param string   $imageUri  the URI for the button image
 	 */
-	public function addButton(string $text, ?int $imageType = null, string $imageUri = '') : self {
+	public function addButton(string $text, ?int $imageType = null, string $imageUri = '') : static {
 		$image = $imageType !== null ? ButtonImage::create($imageType, $imageUri) : null;
 		$button = new Button($text, $image);
 		$this->addElement($button);
@@ -46,7 +46,7 @@ trait SimpleHelper {
 	 *
 	 * @throws PocketFormException if any of the values in the array are not strings
 	 */
-	public function addButtons(array $buttons) : self {
+	public function addButtons(array $buttons) : static {
 		if (Utils::validateArrayValueType($buttons, function (string $button) : void {})) {
 			throw new PocketFormException('Failed to build buttons Element: Buttons array can only be strings!');
 		}
@@ -64,7 +64,7 @@ trait SimpleHelper {
 	 *
 	 * @param string $label the text for the label element
 	 */
-	public function addLabel(string $label) : self {
+	public function addLabel(string $label) : static {
 		$labelElement = new Label($label);
 		$this->addElement($labelElement);
 		return $this;
@@ -80,7 +80,7 @@ trait SimpleHelper {
 	 *
 	 * @return $this
 	 */
-	public function addHeader(string $text) : self {
+	public function addHeader(string $text) : static {
 		$header = new Header($text);
 		$this->addElement($header);
 		return $this;
@@ -94,7 +94,7 @@ trait SimpleHelper {
 	 *
 	 * @return $this
 	 */
-	public function addDivider() : self {
+	public function addDivider() : static {
 		$divider = new Divider();
 		$this->addElement($divider);
 		return $this;

@@ -36,7 +36,7 @@ trait FormValidator {
 	 *
 	 * @param Validator $validator the validator to set
 	 */
-	public function validator(Validator $validator) : self {
+	public function validator(Validator $validator) : static {
 		$this->validatorType = $validator;
 		return $this;
 	}

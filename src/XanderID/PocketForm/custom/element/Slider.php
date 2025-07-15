@@ -21,20 +21,37 @@ use XanderID\PocketForm\PocketFormException;
  */
 class Slider extends CustomElement {
 	/**
-	 * @param string   $label   the label for the slider
-	 * @param int      $min     the minimum value of the slider
-	 * @param int      $max     the maximum value of the slider
-	 * @param int|null $step    the increment step of the slider (optional)
-	 * @param int|null $default the default value of the slider (optional)
+	 * @param string      $label   the label for the slider
+	 * @param int         $min     the minimum value of the slider
+	 * @param int         $max     the maximum value of the slider
+	 * @param int|null    $step    the increment step of the slider (optional)
+	 * @param int|null    $default the default value of the slider (optional)
+	 * @param string|null $tooltip tooltip shown on hover (optional)
 	 */
 	public function __construct(
 		string $label,
 		protected int $min,
 		protected int $max,
 		protected ?int $step = null,
-		protected ?int $default = null
+		protected ?int $default = null,
+		?string $tooltip = null
 	) {
 		$this->setLabel($label);
+		$this->setTooltip($tooltip);
+	}
+
+	/**
+	 * Creates a new Slider element.
+	 *
+	 * @param string      $label   the label for the slider
+	 * @param int         $min     the minimum value of the slider
+	 * @param int         $max     the maximum value of the slider
+	 * @param int|null    $step    the increment step of the slider (optional)
+	 * @param int|null    $default the default value of the slider (optional)
+	 * @param string|null $tooltip tooltip shown on hover (optional)
+	 */
+	public static function create(string $label, int $min, int $max, ?int $step = null, ?int $default = null, ?string $tooltip = null) : self {
+		return new self($label, $min, $max, $step, $default, $tooltip);
 	}
 
 	/**
@@ -141,7 +158,7 @@ class Slider extends CustomElement {
 	/**
 	 * Build the slider element.
 	 *
-	 * @param array<string, list<mixed>> &$components The components array to add the slider to
+	 * @param array<string, list<array<string, mixed>>> &$components The components array to add the slider to
 	 */
 	public function build(array &$components) : void {
 		$slider = ['type' => $this->getType(), 'text' => $this->label, 'min' => $this->min, 'max' => $this->max];
@@ -151,6 +168,10 @@ class Slider extends CustomElement {
 
 		if ($this->default !== null) {
 			$slider['default'] = $this->default;
+		}
+
+		if ($this->tooltip !== null) {
+			$slider['tooltip'] = $this->tooltip;
 		}
 
 		$components['content'][] = $slider;

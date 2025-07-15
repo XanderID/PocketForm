@@ -30,7 +30,7 @@ trait Confirm {
 	 * @param string $submit the submit button text (default is ModalForm::DEFAULT_SUBMIT)
 	 * @param string $cancel the cancel button text (default is ModalForm::DEFAULT_CANCEL)
 	 */
-	public function confirm(string $title, string $body, string $submit = ModalForm::DEFAULT_SUBMIT, string $cancel = ModalForm::DEFAULT_CANCEL) : self {
+	public function confirm(string $title, string $body, string $submit = ModalForm::DEFAULT_SUBMIT, string $cancel = ModalForm::DEFAULT_CANCEL) : static {
 		$form = new ModalForm($title);
 		$form->setBody($body);
 		$form->setSubmit($submit);

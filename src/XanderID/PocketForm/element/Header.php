@@ -20,7 +20,7 @@ use XanderID\PocketForm\Utils;
  * Represents a header element used to display a section title in the form.
  * WARNING: can be used on Minecraft Version 1.21.70 and above only.
  */
-class Header extends ReadonlyElement {
+class Header extends UniversalElement implements ReadonlyElement {
 	use FormLabel;
 
 	/**
@@ -31,13 +31,22 @@ class Header extends ReadonlyElement {
 	}
 
 	/**
+	 * Creates a new Header element.
+	 *
+	 * @param string $header the text for the header element
+	 */
+	public static function create(string $header) : self {
+		return new self($header);
+	}
+
+	/**
 	 * Returns the supported form type.
 	 * Only works in CustomForm due to lack of key support in SimpleForm.
 	 *
 	 * @return array<string> The supported form type
 	 */
 	public function supportForm() : array {
-		return [Utils::FORM_TYPES[2]];
+		return [Utils::FORM_TYPES[0], Utils::FORM_TYPES[2]];
 	}
 
 	/**
@@ -52,10 +61,10 @@ class Header extends ReadonlyElement {
 	/**
 	 * Build the header element.
 	 *
-	 * @param array<string, list<mixed>> &$components The components array to add the header to
+	 * @param array<string, list<array<string, mixed>>> &$components The components array to add the header to
 	 */
 	public function build(array &$components) : void {
 		$header = ['type' => $this->getType(), 'text' => $this->label];
-		$components['content'][] = $header;
+		$this->initBuild($components, $header);
 	}
 }

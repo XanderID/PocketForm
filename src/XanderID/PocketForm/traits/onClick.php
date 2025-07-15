@@ -29,7 +29,7 @@ trait onClick {
 	 *
 	 * @param Closure $onClick a callback that takes a Player as parameter
 	 */
-	public function onClick(Closure $onClick) : self {
+	public function onClick(Closure $onClick) : static {
 		Utils::validateCallableSignature(function (Player $player) : void {}, $onClick);
 		$this->onClickListener = $onClick;
 		return $this;

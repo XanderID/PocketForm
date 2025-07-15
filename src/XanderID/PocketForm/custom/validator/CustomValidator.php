@@ -48,6 +48,16 @@ class CustomValidator extends Validator {
 	}
 
 	/**
+	 * Creates a new CustomValidator instance.
+	 *
+	 * @param Closure $validator the validation function that accepts mixed data and returns a string error message if validation fails,
+	 *                           or null if the data is valid
+	 */
+	public static function create(Closure $validator) : self {
+		return new self($validator);
+	}
+
+	/**
 	 * Validate the given data.
 	 *
 	 * @param mixed $data the data to validate

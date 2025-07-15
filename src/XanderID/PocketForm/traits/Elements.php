@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace XanderID\PocketForm\traits;
 
-use XanderID\PocketForm\Element;
+use XanderID\PocketForm\element\Element;
 use XanderID\PocketForm\Utils;
 use function array_merge;
 use function array_values;
@@ -111,7 +111,7 @@ trait Elements {
 	 *
 	 * @throws \Exception if validation fails
 	 */
-	public function mergeElement(array $elements) : static {
+	public function mergeElements(array $elements) : static {
 		Utils::validateArrayElement($elements, 'Failed to merge Elements');
 		$this->elements = array_merge($this->elements, $elements);
 		return $this;

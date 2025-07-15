@@ -50,6 +50,28 @@ class TypeValidator extends Validator {
 	}
 
 	/**
+	 * Create a text validator.
+	 *
+	 * @param string $error the error message for invalid text
+	 *
+	 * @return self returns a new instance of TypeValidator for text
+	 */
+	public static function TEXT(string $error = Validator::DEFAULT_ERROR) : self {
+		return new self(self::TEXT, $error);
+	}
+
+	/**
+	 * Create a number validator.
+	 *
+	 * @param string $error the error message for invalid numbers
+	 *
+	 * @return self returns a new instance of TypeValidator for numbers
+	 */
+	public static function NUMBER(string $error = Validator::DEFAULT_ERROR) : self {
+		return new self(self::NUMBER, $error);
+	}
+
+	/**
 	 * Parse the text input based on the specified type.
 	 *
 	 * @param string $text the input text
@@ -73,27 +95,5 @@ class TypeValidator extends Validator {
 			$this->validator === self::NUMBER && !is_numeric($data) => $this->error(),
 			default => null,
 		};
-	}
-
-	/**
-	 * Create a text validator.
-	 *
-	 * @param string $error the error message for invalid text
-	 *
-	 * @return self returns a new instance of TypeValidator for text
-	 */
-	public static function TEXT(string $error = Validator::DEFAULT_ERROR) : self {
-		return new self(self::TEXT, $error);
-	}
-
-	/**
-	 * Create a number validator.
-	 *
-	 * @param string $error the error message for invalid numbers
-	 *
-	 * @return self returns a new instance of TypeValidator for numbers
-	 */
-	public static function NUMBER(string $error = Validator::DEFAULT_ERROR) : self {
-		return new self(self::NUMBER, $error);
 	}
 }

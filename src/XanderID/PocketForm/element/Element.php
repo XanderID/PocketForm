@@ -11,7 +11,9 @@
 
 declare(strict_types=1);
 
-namespace XanderID\PocketForm;
+namespace XanderID\PocketForm\element;
+
+use XanderID\PocketForm\PocketFormException;
 
 /**
  * Represents a form element which can be built into a set of components.

@@ -15,11 +15,12 @@ namespace XanderID\PocketForm\custom;
 
 use XanderID\PocketForm\custom\element\Input;
 use XanderID\PocketForm\custom\validator\TypeValidator;
-use XanderID\PocketForm\Element;
+use XanderID\PocketForm\element\Element;
 use XanderID\PocketForm\PocketFormException;
 use XanderID\PocketForm\traits\FormLabel;
 use XanderID\PocketForm\traits\FormValidator;
 use XanderID\PocketForm\traits\FormValue;
+use XanderID\PocketForm\traits\Tooltip;
 use XanderID\PocketForm\Utils;
 
 /**
@@ -29,6 +30,7 @@ abstract class CustomElement extends Element {
 	use FormLabel;
 	use FormValidator;
 	use FormValue;
+	use Tooltip;
 
 	/**
 	 * Returns the supported form type for this element.

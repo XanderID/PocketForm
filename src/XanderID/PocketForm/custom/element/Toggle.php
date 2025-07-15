@@ -20,14 +20,28 @@ use XanderID\PocketForm\custom\CustomElement;
  */
 class Toggle extends CustomElement {
 	/**
-	 * @param string    $label   the label for the toggle
-	 * @param bool|null $default the default state (true for on, false for off)
+	 * @param string      $label   the label for the toggle
+	 * @param bool|null   $default the default state (true for on, false for off) (optional)
+	 * @param string|null $tooltip tooltip shown on hover (optional)
 	 */
 	public function __construct(
 		string $label,
-		protected ?bool $default = null
+		protected ?bool $default = null,
+		?string $tooltip = null
 	) {
 		$this->setLabel($label);
+		$this->setTooltip($tooltip);
+	}
+
+	/**
+	 * Creates a new Toggle element.
+	 *
+	 * @param string      $label   the label for the toggle
+	 * @param bool|null   $default the default state (true for on, false for off) (optional)
+	 * @param string|null $tooltip tooltip shown on hover (optional)
+	 */
+	public static function create(string $label, ?bool $default = null, ?string $tooltip = null) : self {
+		return new self($label, $default, $tooltip);
 	}
 
 	/**
@@ -61,12 +75,16 @@ class Toggle extends CustomElement {
 	/**
 	 * Build the toggle element.
 	 *
-	 * @param array<string, list<mixed>> &$components The components array to add the toggle to
+	 * @param array<string, list<array<string, mixed>>> &$components The components array to add the toggle to
 	 */
 	public function build(array &$components) : void {
 		$toggle = ['type' => $this->getType(), 'text' => $this->label];
 		if ($this->default !== null) {
 			$toggle['default'] = $this->default;
+		}
+
+		if ($this->tooltip !== null) {
+			$toggle['tooltip'] = $this->tooltip;
 		}
 
 		$components['content'][] = $toggle;

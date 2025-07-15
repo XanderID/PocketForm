@@ -12,7 +12,7 @@ PocketForm is a powerful and flexible PHP library designed exclusively for creat
   - [Usage Examples](#usage-examples)
     - [Creating a Simple Menu Form](#creating-a-simple-menu-form)
     - [Docs](#docs)
-    - [Whats News](#whats-news)
+    - [What's New](#whats-new)
 
 ## Features
 
@@ -99,7 +99,12 @@ $player->sendForm($form);
 
 For additional documentation, please follow [this link](https://github.com/XanderID/PocketForm/tree/docs).
 
-### Whats News
+### What's New
 
-- Fix Bug
-- Added New Element Divider and Header
+- Added static `create()` method to all Form and Element classes
+- Added new `Divider` and `Header` elements for CustomForm and SimpleForm
+- Added `Tooltip` support to several CustomForm elements
+- Updated `PocketFormHelper::simple()` to use `Button[]` instead of `string[]`
+- Renamed method `mergeElement()` to `mergeElements()` for consistency
+- Refactored internal file structure (fully backward-compatible)
+- Fixed various bugs and improved code stability

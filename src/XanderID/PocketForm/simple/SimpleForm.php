@@ -32,6 +32,18 @@ class SimpleForm extends PocketForm {
 	use SimpleHelper;
 
 	/**
+	 * Creates a new SimpleForm instance.
+	 *
+	 * @param string $title form title
+	 * @param string $body  form body (optional)
+	 */
+	public static function create(string $title, string $body = '') : self {
+		$form = new self($title);
+		$form->setBody($body);
+		return $form;
+	}
+
+	/**
 	 * Get the form type.
 	 *
 	 * @return string returns "form"
@@ -66,7 +78,7 @@ class SimpleForm extends PocketForm {
 	protected function initComponents() : array {
 		return [
 			'content' => $this->body,
-			'buttons' => [],
+			'elements' => [],
 		];
 	}
 

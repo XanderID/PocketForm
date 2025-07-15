@@ -34,7 +34,7 @@ trait FormLabel {
 	 *
 	 * @param string $label the new label
 	 */
-	public function setLabel(string $label) : self {
+	public function setLabel(string $label) : static {
 		$this->label = $label;
 		return $this;
 	}

@@ -13,8 +13,6 @@ declare(strict_types=1);
 
 namespace XanderID\PocketForm\element;
 
-use XanderID\PocketForm\Element;
-
 /**
  * Determines whether the element is read-only.
  *
@@ -22,4 +20,4 @@ use XanderID\PocketForm\Element;
  * In this implementation, the element is always considered interactive,
  * hence this method always returns false.
  */
-abstract class ReadonlyElement extends Element {}
+interface ReadonlyElement {}

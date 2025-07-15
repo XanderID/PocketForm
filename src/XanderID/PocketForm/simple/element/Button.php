@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace XanderID\PocketForm\simple\element;
 
-use XanderID\PocketForm\Element;
+use XanderID\PocketForm\element\Element;
 use XanderID\PocketForm\traits\Confirm;
 use XanderID\PocketForm\traits\onClick;
 use XanderID\PocketForm\Utils;
@@ -39,6 +39,16 @@ class Button extends Element {
 		public string $text,
 		public ?ButtonImage $image = null
 	) {}
+
+	/**
+	 * Creates a new Button element.
+	 *
+	 * @param string           $text  button text
+	 * @param ButtonImage|null $image optional button image
+	 */
+	public static function create(string $text, ?ButtonImage $image = null) : self {
+		return new self($text, $image);
+	}
 
 	/**
 	 * Returns the supported form type for this element.
@@ -128,11 +138,11 @@ class Button extends Element {
 	/**
 	 * Build the button element.
 	 *
-	 * @param array<string, list<mixed>> &$components The components array to add the button to
+	 * @param array<string, list<array<string, mixed>>> &$components The components array to add the button to
 	 */
 	public function build(array &$components) : void {
-		$button = ['text' => $this->text];
+		$button = ['text' => $this->text, 'type' => 'button'];
 		$this->image?->build($button);
-		$components['buttons'][] = $button;
+		$components['elements'][] = $button;
 	}
 }

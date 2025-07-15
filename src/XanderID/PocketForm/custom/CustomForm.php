@@ -58,6 +58,15 @@ class CustomForm extends PocketForm {
 	}
 
 	/**
+	 * Creates a new CustomForm instance.
+	 *
+	 * @param string $title the title of the custom form
+	 */
+	public static function create(string $title) : self {
+		return new self($title);
+	}
+
+	/**
 	 * Get the form type.
 	 *
 	 * @return string returns "custom_form"
@@ -175,6 +184,7 @@ class CustomForm extends PocketForm {
 	protected function initComponents() : array {
 		return [
 			'submit' => $this->submit,
+			'content' => [],
 		];
 	}
 
