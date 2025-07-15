@@ -142,9 +142,9 @@ class CustomForm extends PocketForm {
 
 			/**
 			 * @var Dropdown|Input|Slider|StepSlider|Toggle $element
-			 * @var bool|int|string $value
+			 * @var bool|int|string $parsed
 			 */
-			$element->setDefault($value);
+			$element->setDefault($parsed);
 		}
 
 		if ($isError) {

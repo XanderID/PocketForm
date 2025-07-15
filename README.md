@@ -35,7 +35,7 @@ add PocketForm to the Required Depencies list in your project like this:
 
 ```json
 "require": {
-    "xanderid/pocketform": "^1.0.3"
+    "xanderid/pocketform": "^1.0.7"
   },
 ```
 
