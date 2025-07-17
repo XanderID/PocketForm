@@ -82,10 +82,10 @@ class StepSlider extends CustomElement {
 	/**
 	 * Set the default step index.
 	 *
-	 * @param int $default the default index
+	 * @param float|int $default the default index
 	 */
-	public function setDefault(int $default) : self {
-		$this->default = $default;
+	public function setDefault(float|int $default) : self {
+		$this->default = (int) $default;
 		return $this;
 	}
 

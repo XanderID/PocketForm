@@ -123,10 +123,10 @@ class Slider extends CustomElement {
 	/**
 	 * Set the default slider value.
 	 *
-	 * @param int $default the default value
+	 * @param float|int $default the default value
 	 */
-	public function setDefault(int $default) : self {
-		$this->default = $default;
+	public function setDefault(float|int $default) : self {
+		$this->default = (int) $default;
 		return $this;
 	}
 

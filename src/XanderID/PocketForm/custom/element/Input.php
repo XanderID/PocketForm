@@ -87,10 +87,10 @@ class Input extends CustomElement {
 	/**
 	 * Set the default value.
 	 *
-	 * @param string $default the default value
+	 * @param float|int|string $default the default value
 	 */
-	public function setDefault(string $default) : self {
-		$this->default = $default;
+	public function setDefault(float|int|string $default) : self {
+		$this->default = (string) $default;
 		return $this;
 	}
 

@@ -126,7 +126,9 @@ class CustomForm extends PocketForm {
 			$indexInt = (int) $index;
 			$previous = $elements[$indexInt - 1] ?? null;
 			if ($validated !== null) {
-				if (!$previous instanceof ErrorLabel) {
+				if ($previous instanceof ErrorLabel) {
+					$previous->setLabel($validated);
+				} else {
 					$errorLabels[$indexInt] = new ErrorLabel($validated);
 				}
 
@@ -142,9 +144,9 @@ class CustomForm extends PocketForm {
 
 			/**
 			 * @var Dropdown|Input|Slider|StepSlider|Toggle $element
-			 * @var bool|int|string $parsed
+			 * @var bool|float|int|string $value
 			 */
-			$element->setDefault($parsed);
+			$element->setDefault($value);
 		}
 
 		if ($isError) {
