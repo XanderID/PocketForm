@@ -28,6 +28,7 @@ use XanderID\PocketForm\element\Label;
 use XanderID\PocketForm\element\ReadonlyElement;
 use XanderID\PocketForm\simple\SimpleFormResponse;
 use function count;
+use function dirname;
 use function is_numeric;
 use function is_string;
 
@@ -55,9 +56,9 @@ class Utils {
 	 * @param CustomElement|Label   $element the element for which the value is being processed
 	 * @param bool|float|int|string $value   the raw value from the form response
 	 *
-	 * @return bool|int|string the converted value
+	 * @return bool|float|int|string the converted value
 	 */
-	public static function customValue(CustomElement|Label $element, bool|float|int|string $value) : bool|int|string {
+	public static function customValue(CustomElement|Label $element, bool|float|int|string $value) : bool|float|int|string {
 		if ($element instanceof Input) {
 			$validator = $element->getValidator();
 			if ($validator instanceof TypeValidator) {
@@ -172,5 +173,16 @@ class Utils {
 			}
 		};
 		return $onResponse;
+	}
+
+	/**
+	 * Get base path to resources whether in PHAR or regular folder.
+	 */
+	public static function getResourcePath() : string {
+		if (\Phar::running(false) !== '') {
+			return 'phar://' . \Phar::running(false);
+		}
+
+		return dirname(__DIR__, 3);
 	}
 }

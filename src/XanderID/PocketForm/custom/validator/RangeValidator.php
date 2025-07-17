@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace XanderID\PocketForm\custom\validator;
 
 use pocketmine\utils\TextFormat;
+use function is_float;
 use function is_numeric;
 
 /**
@@ -30,13 +31,13 @@ use function is_numeric;
  */
 class RangeValidator extends Validator {
 	/**
-	 * @param int    $min   The minimum acceptable value (inclusive)
-	 * @param int    $max   The maximum acceptable value (inclusive)
-	 * @param string $error The error message to return if validation fails
+	 * @param float|int $min   The minimum acceptable value (inclusive)
+	 * @param float|int $max   The maximum acceptable value (inclusive)
+	 * @param string    $error The error message to return if validation fails
 	 */
 	public function __construct(
-		protected int $min,
-		protected int $max,
+		protected float|int $min,
+		protected float|int $max,
 		string $error = Validator::DEFAULT_ERROR
 	) {
 		$defaultError = "Please enter a value between {$min} and {$max}.";
@@ -47,15 +48,15 @@ class RangeValidator extends Validator {
 	/**
 	 * Creates a new RangeValidator instance.
 	 *
-	 * @param int    $min   The minimum acceptable value (inclusive)
-	 * @param int    $max   The maximum acceptable value (inclusive)
-	 * @param string $error The error message to return if validation fails
+	 * @param float|int $min   The minimum acceptable value (inclusive)
+	 * @param float|int $max   The maximum acceptable value (inclusive)
+	 * @param string    $error The error message to return if validation fails
 	 *
 	 * @return self Returns a new instance of RangeValidator
 	 */
 	public static function create(
-		int $min,
-		int $max,
+		float|int $min,
+		float|int $max,
 		string $error = Validator::DEFAULT_ERROR
 	) : self {
 		return new self($min, $max, $error);
@@ -73,7 +74,7 @@ class RangeValidator extends Validator {
 			return TextFormat::RED . 'The input must be a number.';
 		}
 
-		$value = (int) $data;
+		$value = is_float($data + 0) ? (float) $data : (int) $data;
 		if ($value < $this->min || $value > $this->max) {
 			return $this->error();
 		}
