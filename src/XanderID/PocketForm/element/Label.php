@@ -13,8 +13,10 @@ declare(strict_types=1);
 
 namespace XanderID\PocketForm\element;
 
+use pocketmine\lang\Translatable;
 use XanderID\PocketForm\traits\FormLabel;
 use XanderID\PocketForm\Utils;
+use XanderID\PocketForm\utils\Translate;
 
 /**
  * Represents a label element used to display static text.
@@ -23,18 +25,18 @@ class Label extends UniversalElement implements ReadonlyElement {
 	use FormLabel;
 
 	/**
-	 * @param string $label the text for the label element
+	 * @param string|Translatable $label the text for the label element
 	 */
-	public function __construct(string $label) {
+	public function __construct(string|Translatable $label) {
 		$this->setLabel($label);
 	}
 
 	/**
 	 * Creates a new Label element.
 	 *
-	 * @param string $label the text for the label element
+	 * @param string|Translatable $label the text for the label element
 	 */
-	public static function create(string $label) : self {
+	public static function create(string|Translatable $label) : self {
 		return new self($label);
 	}
 
@@ -63,7 +65,10 @@ class Label extends UniversalElement implements ReadonlyElement {
 	 * @param array<string, list<array<string, mixed>>> &$components The components array to add the label to
 	 */
 	public function build(array &$components) : void {
-		$label = ['type' => $this->getType(), 'text' => $this->label];
+		$label = [
+			'type' => $this->getType(),
+			'text' => Translate::translate($this->label),
+		];
 		$this->initBuild($components, $label);
 	}
 }

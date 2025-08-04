@@ -13,19 +13,21 @@ declare(strict_types=1);
 
 namespace XanderID\PocketForm\traits;
 
+use pocketmine\lang\Translatable;
+
 /**
  * Provides methods to set and get tooltip text for UI elements.
  */
 trait Tooltip {
-	/** @var string|null the tooltip text */
-	protected ?string $tooltip = null;
+	/** @var string|Translatable|null the tooltip text */
+	protected null|string|Translatable $tooltip = null;
 
 	/**
 	 * Set the tooltip text.
 	 *
-	 * @param string|null $tooltip the tooltip text to show on hover
+	 * @param string|Translatable|null $tooltip the tooltip text to show on hover
 	 */
-	public function setTooltip(?string $tooltip) : static {
+	public function setTooltip(null|string|Translatable $tooltip) : static {
 		$this->tooltip = $tooltip;
 		return $this;
 	}
@@ -33,9 +35,9 @@ trait Tooltip {
 	/**
 	 * Get the tooltip text.
 	 *
-	 * @return string|null the current tooltip text
+	 * @return string|Translatable|null the current tooltip text
 	 */
-	public function getTooltip() : ?string {
+	public function getTooltip() : null|string|Translatable {
 		return $this->tooltip;
 	}
 }

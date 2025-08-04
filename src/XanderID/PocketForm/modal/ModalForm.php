@@ -13,9 +13,11 @@ declare(strict_types=1);
 
 namespace XanderID\PocketForm\modal;
 
+use pocketmine\lang\Translatable;
 use XanderID\PocketForm\PocketForm;
 use XanderID\PocketForm\traits\Body;
 use XanderID\PocketForm\traits\Submit;
+use XanderID\PocketForm\utils\Translate;
 
 /**
  * Represents a modal form with two buttons (submit and cancel).
@@ -41,22 +43,35 @@ class ModalForm extends PocketForm {
 	public const DEFAULT_CANCEL = 'gui.no';
 
 	/**
-	 * @param string $title the title of the modal form
+	 * @param string|Translatable $title  the title of the modal form
+	 * @param string|Translatable $submit the text for the submit button (default is self::DEFAULT_SUBMIT)
+	 * @param string|Translatable $cancel the text for the cancel button (default is self::DEFAULT_CANCEL)
 	 */
-	public function __construct(string $title) {
-		$this->setSubmit(self::DEFAULT_SUBMIT);
-		$this->setCancel(self::DEFAULT_CANCEL);
+	public function __construct(
+		string|Translatable $title,
+		string|Translatable $submit = self::DEFAULT_SUBMIT,
+		string|Translatable $cancel = self::DEFAULT_CANCEL
+	) {
+		$this->setSubmit($submit);
+		$this->setCancel($cancel);
 		parent::__construct($title);
 	}
 
 	/**
 	 * Creates a new ModalForm instance.
 	 *
-	 * @param string $title form title
-	 * @param string $body  form body (optional)
+	 * @param string|Translatable $title  form title
+	 * @param string|Translatable $body   form body (optional)
+	 * @param string|Translatable $submit submit button text (optional, default is DEFAULT_SUBMIT)
+	 * @param string|Translatable $cancel cancel button text (optional, default is DEFAULT_CANCEL)
 	 */
-	public static function create(string $title, string $body = '') : self {
-		$form = new self($title);
+	public static function create(
+		string|Translatable $title,
+		string|Translatable $body = '',
+		string|Translatable $submit = self::DEFAULT_SUBMIT,
+		string|Translatable $cancel = self::DEFAULT_CANCEL
+	) : self {
+		$form = new self($title, $submit, $cancel);
 		$form->setBody($body);
 		return $form;
 	}
@@ -95,9 +110,9 @@ class ModalForm extends PocketForm {
 	 */
 	protected function initComponents() : array {
 		return [
-			'content' => $this->body,
-			'button1' => $this->submit,
-			'button2' => $this->cancel,
+			'content' => Translate::translate($this->body),
+			'button1' => Translate::translate($this->submit),
+			'button2' => Translate::translate($this->cancel),
 		];
 	}
 }

@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace XanderID\PocketForm\custom;
 
+use pocketmine\lang\Translatable;
 use XanderID\PocketForm\PocketFormException;
 use XanderID\PocketForm\PocketFormResponse;
 use XanderID\PocketForm\Utils;
@@ -25,7 +26,7 @@ use function is_array;
  *
  * @extends PocketFormResponse<CustomForm>
  *
- * @phpstan-type NonFloatScalar string|int|bool
+ * @phpstan-type NonFloatScalar string|int|bool|Translatable
  */
 class CustomFormResponse extends PocketFormResponse {
 	/** @var list<NonFloatScalar> processed response data */
@@ -44,8 +45,8 @@ class CustomFormResponse extends PocketFormResponse {
 		}
 
 		$data = array_values($data);
-		if (Utils::validateArrayValueType($data, function (bool|int|string $data) : void {})) {
-			throw new PocketFormException('Invalid response data: all elements must be bool, int, or string.');
+		if (Utils::validateArrayValueType($data, function (bool|int|string|Translatable $data) : void {})) {
+			throw new PocketFormException('Invalid response data: all elements must be bool, int, string or Translatable.');
 		}
 
 		/** @var list<bool|int|string> $data */

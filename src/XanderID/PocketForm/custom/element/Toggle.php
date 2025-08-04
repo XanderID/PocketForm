@@ -13,21 +13,23 @@ declare(strict_types=1);
 
 namespace XanderID\PocketForm\custom\element;
 
+use pocketmine\lang\Translatable;
 use XanderID\PocketForm\custom\CustomElement;
+use XanderID\PocketForm\utils\Translate;
 
 /**
  * Represents a toggle element for boolean values.
  */
 class Toggle extends CustomElement {
 	/**
-	 * @param string      $label   the label for the toggle
-	 * @param bool|null   $default the default state (true for on, false for off) (optional)
-	 * @param string|null $tooltip tooltip shown on hover (optional)
+	 * @param string|Translatable      $label   the label for the toggle
+	 * @param bool|null                $default the default state (true for on, false for off) (optional)
+	 * @param string|Translatable|null $tooltip tooltip shown on hover (optional)
 	 */
 	public function __construct(
-		string $label,
+		string|Translatable $label,
 		protected ?bool $default = null,
-		?string $tooltip = null
+		null|string|Translatable $tooltip = null
 	) {
 		$this->setLabel($label);
 		$this->setTooltip($tooltip);
@@ -36,11 +38,11 @@ class Toggle extends CustomElement {
 	/**
 	 * Creates a new Toggle element.
 	 *
-	 * @param string      $label   the label for the toggle
-	 * @param bool|null   $default the default state (true for on, false for off) (optional)
-	 * @param string|null $tooltip tooltip shown on hover (optional)
+	 * @param string|Translatable      $label   the label for the toggle
+	 * @param bool|null                $default the default state (true for on, false for off) (optional)
+	 * @param string|Translatable|null $tooltip tooltip shown on hover (optional)
 	 */
-	public static function create(string $label, ?bool $default = null, ?string $tooltip = null) : self {
+	public static function create(string|Translatable $label, ?bool $default = null, null|string|Translatable $tooltip = null) : self {
 		return new self($label, $default, $tooltip);
 	}
 
@@ -78,13 +80,17 @@ class Toggle extends CustomElement {
 	 * @param array<string, list<array<string, mixed>>> &$components The components array to add the toggle to
 	 */
 	public function build(array &$components) : void {
-		$toggle = ['type' => $this->getType(), 'text' => $this->label];
+		$toggle = [
+			'type' => $this->getType(),
+			'text' => Translate::translate($this->label),
+		];
+
 		if ($this->default !== null) {
 			$toggle['default'] = $this->default;
 		}
 
 		if ($this->tooltip !== null) {
-			$toggle['tooltip'] = $this->tooltip;
+			$toggle['tooltip'] = Translate::translate($this->tooltip);
 		}
 
 		$components['content'][] = $toggle;

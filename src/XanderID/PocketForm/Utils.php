@@ -14,6 +14,8 @@ declare(strict_types=1);
 namespace XanderID\PocketForm;
 
 use Closure;
+use Phar;
+use pocketmine\lang\Translatable;
 use pocketmine\player\Player;
 use pocketmine\utils\Utils as PMUtils;
 use XanderID\PocketForm\custom\CustomElement;
@@ -29,8 +31,6 @@ use XanderID\PocketForm\element\ReadonlyElement;
 use XanderID\PocketForm\simple\SimpleFormResponse;
 use function count;
 use function dirname;
-use function is_numeric;
-use function is_string;
 
 /**
  * Contains utility methods for validation, array manipulation, and menu callable.
@@ -56,25 +56,22 @@ class Utils {
 	 * @param CustomElement|Label   $element the element for which the value is being processed
 	 * @param bool|float|int|string $value   the raw value from the form response
 	 *
-	 * @return bool|float|int|string the converted value
+	 * @return bool|float|int|string|Translatable the converted value
 	 */
-	public static function customValue(CustomElement|Label $element, bool|float|int|string $value) : bool|float|int|string {
+	public static function customValue(CustomElement|Label $element, bool|float|int|string $value) : bool|float|int|string|Translatable {
 		if ($element instanceof Input) {
+			$value = (string) $value;
 			$validator = $element->getValidator();
-			if ($validator instanceof TypeValidator) {
-				if (!is_string($value)) {
-					$value = (string) $value;
-				}
 
-				return $validator->parseText($value);
-			}
+			return $validator instanceof TypeValidator
+				? $validator->parseText($value)
+				: $value;
 		}
 
 		return match (true) {
-			$element instanceof Dropdown => (string) $element->getOptions()[(int) $value],
-			$element instanceof Input => is_string($value) ? $value : (string) $value,
-			$element instanceof Label => (string) $element->getLabel(),
-			$element instanceof Slider => is_numeric($value) ? (int) $value : (int) $value,
+			$element instanceof Dropdown => $element->getOptions()[(int) $value],
+			$element instanceof Label => $element->getLabel(),
+			$element instanceof Slider => (int) $value,
 			$element instanceof StepSlider => (int) $element->getStep()[(int) $value],
 			$element instanceof Toggle => (bool) $value,
 			default => throw new PocketFormException('Could not find Element'),
@@ -179,10 +176,6 @@ class Utils {
 	 * Get base path to resources whether in PHAR or regular folder.
 	 */
 	public static function getResourcePath() : string {
-		if (\Phar::running(false) !== '') {
-			return 'phar://' . \Phar::running(false);
-		}
-
 		return dirname(__DIR__, 3);
 	}
 }

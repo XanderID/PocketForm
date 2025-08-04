@@ -13,28 +13,30 @@ declare(strict_types=1);
 
 namespace XanderID\PocketForm\traits;
 
+use pocketmine\lang\Translatable;
+
 /**
  * Provides methods to set and get the label of a form element.
  */
 trait FormLabel {
-	/** @var string the form label */
-	protected string $label = '';
+	/** @var string|Translatable the form label */
+	protected string|Translatable $label = '';
 
 	/**
 	 * Get the label.
 	 *
-	 * @return string the current label
+	 * @return string|Translatable the current label
 	 */
-	public function getLabel() : string {
+	public function getLabel() : string|Translatable {
 		return $this->label;
 	}
 
 	/**
 	 * Set the label.
 	 *
-	 * @param string $label the new label
+	 * @param string|Translatable $label the new label
 	 */
-	public function setLabel(string $label) : static {
+	public function setLabel(string|Translatable $label) : static {
 		$this->label = $label;
 		return $this;
 	}

@@ -13,10 +13,12 @@ declare(strict_types=1);
 
 namespace XanderID\PocketForm\custom\element;
 
+use pocketmine\lang\Translatable;
 use TypeError;
 use XanderID\PocketForm\custom\CustomElement;
 use XanderID\PocketForm\PocketFormException;
 use XanderID\PocketForm\Utils;
+use XanderID\PocketForm\utils\Translate;
 use function array_map;
 
 /**
@@ -24,16 +26,16 @@ use function array_map;
  */
 class StepSlider extends CustomElement {
 	/**
-	 * @param string      $label   the label for the step slider
-	 * @param list<int>   $step    an array of step values (each step is an integer)
-	 * @param int|null    $default the default selected step index (optional)
-	 * @param string|null $tooltip tooltip shown on hover (optional)
+	 * @param string|Translatable      $label   the label for the step slider
+	 * @param list<int>                $step    an array of step values (each step is an integer)
+	 * @param int|null                 $default the default selected step index (optional)
+	 * @param string|Translatable|null $tooltip tooltip shown on hover (optional)
 	 */
 	public function __construct(
-		string $label,
+		string|Translatable $label,
 		protected array $step,
 		protected ?int $default = null,
-		?string $tooltip = null
+		null|string|Translatable $tooltip = null
 	) {
 		$this->setLabel($label);
 		$this->setTooltip($tooltip);
@@ -42,12 +44,12 @@ class StepSlider extends CustomElement {
 	/**
 	 * Creates a new StepSlider element.
 	 *
-	 * @param string      $label   the label for the step slider
-	 * @param list<int>   $step    an array of step values (each step is an integer)
-	 * @param int|null    $default the default selected step index (optional)
-	 * @param string|null $tooltip tooltip shown on hover (optional)
+	 * @param string|Translatable      $label   the label for the step slider
+	 * @param list<int>                $step    an array of step values (each step is an integer)
+	 * @param int|null                 $default the default selected step index (optional)
+	 * @param string|Translatable|null $tooltip tooltip shown on hover (optional)
 	 */
-	public static function create(string $label, array $step, ?int $default = null, ?string $tooltip = null) : self {
+	public static function create(string|Translatable $label, array $step, ?int $default = null, null|string|Translatable $tooltip = null) : self {
 		return new self($label, $step, $default, $tooltip);
 	}
 
@@ -128,7 +130,7 @@ class StepSlider extends CustomElement {
 		$steps = array_map('strval', $this->step);
 		$slider = [
 			'type' => $this->getType(),
-			'text' => $this->label,
+			'text' => Translate::translate($this->label),
 			'steps' => $steps,
 		];
 		if ($this->default !== null) {
@@ -136,7 +138,7 @@ class StepSlider extends CustomElement {
 		}
 
 		if ($this->tooltip !== null) {
-			$slider['tooltip'] = $this->tooltip;
+			$slider['tooltip'] = Translate::translate($this->tooltip);
 		}
 
 		$components['content'][] = $slider;

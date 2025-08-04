@@ -13,12 +13,14 @@ declare(strict_types=1);
 
 namespace XanderID\PocketForm\simple;
 
+use pocketmine\lang\Translatable;
 use pocketmine\player\Player;
 use XanderID\PocketForm\modal\ModalFormResponse;
 use XanderID\PocketForm\PocketForm;
 use XanderID\PocketForm\PocketFormException;
 use XanderID\PocketForm\simple\element\Button;
 use XanderID\PocketForm\traits\Body;
+use XanderID\PocketForm\utils\Translate;
 use function gettype;
 use function is_int;
 
@@ -34,10 +36,10 @@ class SimpleForm extends PocketForm {
 	/**
 	 * Creates a new SimpleForm instance.
 	 *
-	 * @param string $title form title
-	 * @param string $body  form body (optional)
+	 * @param string|Translatable $title form title
+	 * @param string|Translatable $body  form body (optional)
 	 */
-	public static function create(string $title, string $body = '') : self {
+	public static function create(string|Translatable $title, string|Translatable $body = '') : self {
 		$form = new self($title);
 		$form->setBody($body);
 		return $form;
@@ -77,7 +79,7 @@ class SimpleForm extends PocketForm {
 	 */
 	protected function initComponents() : array {
 		return [
-			'content' => $this->body,
+			'content' => Translate::translate($this->body),
 			'elements' => [],
 		];
 	}

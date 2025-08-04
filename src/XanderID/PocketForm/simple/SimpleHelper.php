@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace XanderID\PocketForm\simple;
 
+use pocketmine\lang\Translatable;
 use XanderID\PocketForm\element\Divider;
 use XanderID\PocketForm\element\Header;
 use XanderID\PocketForm\element\Label;
@@ -28,11 +29,11 @@ trait SimpleHelper {
 	/**
 	 * Add a button element.
 	 *
-	 * @param string   $text      the text for the button
-	 * @param int|null $imageType the image type (0 for PATH, otherwise URL)
-	 * @param string   $imageUri  the URI for the button image
+	 * @param string|Translatable $text      the text for the button
+	 * @param int|null            $imageType the image type (0 for PATH, otherwise URL)
+	 * @param string              $imageUri  the URI for the button image
 	 */
-	public function addButton(string $text, ?int $imageType = null, string $imageUri = '') : static {
+	public function addButton(string|Translatable $text, ?int $imageType = null, string $imageUri = '') : static {
 		$image = $imageType !== null ? ButtonImage::create($imageType, $imageUri) : null;
 		$button = new Button($text, $image);
 		$this->addElement($button);
@@ -42,13 +43,13 @@ trait SimpleHelper {
 	/**
 	 * Add multiple buttons.
 	 *
-	 * @param list<string> $buttons an array of button texts
+	 * @param list<string|Translatable> $buttons an array of button texts
 	 *
-	 * @throws PocketFormException if any of the values in the array are not strings
+	 * @throws PocketFormException if any of the values in the array are not strings or Translatable
 	 */
 	public function addButtons(array $buttons) : static {
-		if (Utils::validateArrayValueType($buttons, function (string $button) : void {})) {
-			throw new PocketFormException('Failed to build buttons Element: Buttons array can only be strings!');
+		if (Utils::validateArrayValueType($buttons, function (string|Translatable $button) : void {})) {
+			throw new PocketFormException('Failed to build buttons Element: Buttons array can only be strings or Translatable!');
 		}
 
 		foreach ($buttons as $text) {
@@ -62,9 +63,9 @@ trait SimpleHelper {
 	/**
 	 * Add a label element.
 	 *
-	 * @param string $label the text for the label element
+	 * @param string|Translatable $label the text for the label element
 	 */
-	public function addLabel(string $label) : static {
+	public function addLabel(string|Translatable $label) : static {
 		$labelElement = new Label($label);
 		$this->addElement($labelElement);
 		return $this;
@@ -76,11 +77,11 @@ trait SimpleHelper {
 	 * This is a non-interactive element used for labeling sections.
 	 * WARNING: Only supported in Minecraft version 1.21.70 and above.
 	 *
-	 * @param string $text the text to display in the header
+	 * @param string|Translatable $text the text to display in the header
 	 *
 	 * @return $this
 	 */
-	public function addHeader(string $text) : static {
+	public function addHeader(string|Translatable $text) : static {
 		$header = new Header($text);
 		$this->addElement($header);
 		return $this;

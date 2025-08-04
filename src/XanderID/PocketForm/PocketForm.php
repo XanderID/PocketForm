@@ -15,9 +15,11 @@ namespace XanderID\PocketForm;
 
 use Closure;
 use pocketmine\form\Form;
+use pocketmine\lang\Translatable;
 use pocketmine\player\Player;
 use pocketmine\utils\Utils;
 use XanderID\PocketForm\traits\Elements;
+use XanderID\PocketForm\utils\Translate;
 use function gettype;
 use function is_array;
 use function is_bool;
@@ -39,9 +41,9 @@ abstract class PocketForm implements Form {
 	protected ?Closure $onCloseListener = null;
 
 	/**
-	 * @param string $title the title of the form
+	 * @param string|Translatable $title the title of the form
 	 */
-	public function __construct(protected string $title) {}
+	public function __construct(protected string|Translatable $title) {}
 
 	/**
 	 * Get the type of the form.
@@ -74,11 +76,11 @@ abstract class PocketForm implements Form {
 	/**
 	 * Set the form title.
 	 *
-	 * @param string $title the new title for the form
+	 * @param string|Translatable $title the new title for the form
 	 *
 	 * @return self<T> returns the current form instance
 	 */
-	public function setTitle(string $title) : self {
+	public function setTitle(string|Translatable $title) : self {
 		$this->title = $title;
 		return $this;
 	}
@@ -153,7 +155,7 @@ abstract class PocketForm implements Form {
 	public function jsonSerialize() : array {
 		$components = $this->initComponents();
 		$components['type'] = $this->getType();
-		$components['title'] = $this->title;
+		$components['title'] = Translate::translate($this->title);
 		$this->buildElements($components);
 		return $components;
 	}

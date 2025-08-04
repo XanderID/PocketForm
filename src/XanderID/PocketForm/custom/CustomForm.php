@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace XanderID\PocketForm\custom;
 
+use pocketmine\lang\Translatable;
 use pocketmine\player\Player;
 use XanderID\PocketForm\custom\element\Dropdown;
 use XanderID\PocketForm\custom\element\Input;
@@ -28,6 +29,7 @@ use XanderID\PocketForm\PocketFormException;
 use XanderID\PocketForm\traits\Confirm;
 use XanderID\PocketForm\traits\Submit;
 use XanderID\PocketForm\Utils;
+use XanderID\PocketForm\utils\Translate;
 use function count;
 use function gettype;
 use function is_array;
@@ -50,9 +52,9 @@ class CustomForm extends PocketForm {
 	public const DEFAULT_SUBMIT = 'gui.submit';
 
 	/**
-	 * @param string $title the title of the custom form
+	 * @param string|Translatable $title the title of the custom form
 	 */
-	public function __construct(string $title) {
+	public function __construct(string|Translatable $title) {
 		$this->setSubmit(self::DEFAULT_SUBMIT);
 		parent::__construct($title);
 	}
@@ -60,9 +62,9 @@ class CustomForm extends PocketForm {
 	/**
 	 * Creates a new CustomForm instance.
 	 *
-	 * @param string $title the title of the custom form
+	 * @param string|Translatable $title the title of the custom form
 	 */
-	public static function create(string $title) : self {
+	public static function create(string|Translatable $title) : self {
 		return new self($title);
 	}
 
@@ -185,7 +187,7 @@ class CustomForm extends PocketForm {
 	 */
 	protected function initComponents() : array {
 		return [
-			'submit' => $this->submit,
+			'submit' => Translate::translate($this->submit),
 			'content' => [],
 		];
 	}

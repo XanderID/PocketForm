@@ -13,10 +13,12 @@ declare(strict_types=1);
 
 namespace XanderID\PocketForm\simple\element;
 
+use pocketmine\lang\Translatable;
 use XanderID\PocketForm\element\Element;
 use XanderID\PocketForm\traits\Confirm;
 use XanderID\PocketForm\traits\onClick;
 use XanderID\PocketForm\Utils;
+use XanderID\PocketForm\utils\Translate;
 
 /**
  * Represents a button element within a simple form.
@@ -32,21 +34,21 @@ class Button extends Element {
 	private mixed $customId = null;
 
 	/**
-	 * @param string           $text  the text displayed on the button
-	 * @param ButtonImage|null $image optional image for the button
+	 * @param string|Translatable $text  the text displayed on the button
+	 * @param ButtonImage|null    $image optional image for the button
 	 */
 	public function __construct(
-		public string $text,
+		public string|Translatable $text,
 		public ?ButtonImage $image = null
 	) {}
 
 	/**
 	 * Creates a new Button element.
 	 *
-	 * @param string           $text  button text
-	 * @param ButtonImage|null $image optional button image
+	 * @param string|Translatable $text  button text
+	 * @param ButtonImage|null    $image optional button image
 	 */
-	public static function create(string $text, ?ButtonImage $image = null) : self {
+	public static function create(string|Translatable $text, ?ButtonImage $image = null) : self {
 		return new self($text, $image);
 	}
 
@@ -100,9 +102,9 @@ class Button extends Element {
 	/**
 	 * Set the button text.
 	 *
-	 * @param string $text the new button text
+	 * @param string|Translatable $text the new button text
 	 */
-	public function setText(string $text) : self {
+	public function setText(string|Translatable $text) : self {
 		$this->text = $text;
 		return $this;
 	}
@@ -110,9 +112,9 @@ class Button extends Element {
 	/**
 	 * Get the button text.
 	 *
-	 * @return string the button text
+	 * @return string|Translatable the button text
 	 */
-	public function getText() : string {
+	public function getText() : string|Translatable {
 		return $this->text;
 	}
 
@@ -141,7 +143,7 @@ class Button extends Element {
 	 * @param array<string, list<array<string, mixed>>> &$components The components array to add the button to
 	 */
 	public function build(array &$components) : void {
-		$button = ['text' => $this->text, 'type' => 'button'];
+		$button = ['text' => Translate::translate($this->text), 'type' => 'button'];
 		$this->image?->build($button);
 		$components['elements'][] = $button;
 	}

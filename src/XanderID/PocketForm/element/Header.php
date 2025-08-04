@@ -13,8 +13,10 @@ declare(strict_types=1);
 
 namespace XanderID\PocketForm\element;
 
+use pocketmine\lang\Translatable;
 use XanderID\PocketForm\traits\FormLabel;
 use XanderID\PocketForm\Utils;
+use XanderID\PocketForm\utils\Translate;
 
 /**
  * Represents a header element used to display a section title in the form.
@@ -24,18 +26,18 @@ class Header extends UniversalElement implements ReadonlyElement {
 	use FormLabel;
 
 	/**
-	 * @param string $header the text for the header element
+	 * @param string|Translatable $header the text for the header element
 	 */
-	public function __construct(string $header) {
+	public function __construct(string|Translatable $header) {
 		$this->setLabel($header);
 	}
 
 	/**
 	 * Creates a new Header element.
 	 *
-	 * @param string $header the text for the header element
+	 * @param string|Translatable $header the text for the header element
 	 */
-	public static function create(string $header) : self {
+	public static function create(string|Translatable $header) : self {
 		return new self($header);
 	}
 
@@ -64,7 +66,10 @@ class Header extends UniversalElement implements ReadonlyElement {
 	 * @param array<string, list<array<string, mixed>>> &$components The components array to add the header to
 	 */
 	public function build(array &$components) : void {
-		$header = ['type' => $this->getType(), 'text' => $this->label];
+		$header = [
+			'type' => $this->getType(),
+			'text' => Translate::translate($this->label),
+		];
 		$this->initBuild($components, $header);
 	}
 }

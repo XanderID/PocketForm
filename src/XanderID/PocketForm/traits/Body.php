@@ -13,19 +13,21 @@ declare(strict_types=1);
 
 namespace XanderID\PocketForm\traits;
 
+use pocketmine\lang\Translatable;
+
 /**
  * Provides methods to set and get the body content for simple and modal forms.
  */
 trait Body {
-	/** @var string the body content */
-	protected string $body = '';
+	/** @var string|Translatable the body content */
+	protected string|Translatable $body = '';
 
 	/**
 	 * Set the body content.
 	 *
-	 * @param string $body the content to set
+	 * @param string|Translatable $body the content to set
 	 */
-	public function setBody(string $body) : static {
+	public function setBody(string|Translatable $body) : static {
 		$this->body = $body;
 		return $this;
 	}
@@ -33,9 +35,9 @@ trait Body {
 	/**
 	 * Get the body content.
 	 *
-	 * @return string the current body content
+	 * @return string|Translatable the current body content
 	 */
-	public function getBody() : string {
+	public function getBody() : string|Translatable {
 		return $this->body;
 	}
 }

@@ -13,28 +13,30 @@ declare(strict_types=1);
 
 namespace XanderID\PocketForm\custom\element;
 
+use pocketmine\lang\Translatable;
 use XanderID\PocketForm\custom\CustomElement;
 use XanderID\PocketForm\PocketFormException;
+use XanderID\PocketForm\utils\Translate;
 
 /**
  * Represents a slider element for selecting a numeric value within a range.
  */
 class Slider extends CustomElement {
 	/**
-	 * @param string      $label   the label for the slider
-	 * @param int         $min     the minimum value of the slider
-	 * @param int         $max     the maximum value of the slider
-	 * @param int|null    $step    the increment step of the slider (optional)
-	 * @param int|null    $default the default value of the slider (optional)
-	 * @param string|null $tooltip tooltip shown on hover (optional)
+	 * @param string|Translatable      $label   the label for the slider
+	 * @param int                      $min     the minimum value of the slider
+	 * @param int                      $max     the maximum value of the slider
+	 * @param int|null                 $step    the increment step of the slider (optional)
+	 * @param int|null                 $default the default value of the slider (optional)
+	 * @param string|Translatable|null $tooltip tooltip shown on hover (optional)
 	 */
 	public function __construct(
-		string $label,
+		string|Translatable $label,
 		protected int $min,
 		protected int $max,
 		protected ?int $step = null,
 		protected ?int $default = null,
-		?string $tooltip = null
+		null|string|Translatable $tooltip = null
 	) {
 		$this->setLabel($label);
 		$this->setTooltip($tooltip);
@@ -43,14 +45,14 @@ class Slider extends CustomElement {
 	/**
 	 * Creates a new Slider element.
 	 *
-	 * @param string      $label   the label for the slider
-	 * @param int         $min     the minimum value of the slider
-	 * @param int         $max     the maximum value of the slider
-	 * @param int|null    $step    the increment step of the slider (optional)
-	 * @param int|null    $default the default value of the slider (optional)
-	 * @param string|null $tooltip tooltip shown on hover (optional)
+	 * @param string|Translatable      $label   the label for the slider
+	 * @param int                      $min     the minimum value of the slider
+	 * @param int                      $max     the maximum value of the slider
+	 * @param int|null                 $step    the increment step of the slider (optional)
+	 * @param int|null                 $default the default value of the slider (optional)
+	 * @param string|Translatable|null $tooltip tooltip shown on hover (optional)
 	 */
-	public static function create(string $label, int $min, int $max, ?int $step = null, ?int $default = null, ?string $tooltip = null) : self {
+	public static function create(string|Translatable $label, int $min, int $max, ?int $step = null, ?int $default = null, null|string|Translatable $tooltip = null) : self {
 		return new self($label, $min, $max, $step, $default, $tooltip);
 	}
 
@@ -161,7 +163,13 @@ class Slider extends CustomElement {
 	 * @param array<string, list<array<string, mixed>>> &$components The components array to add the slider to
 	 */
 	public function build(array &$components) : void {
-		$slider = ['type' => $this->getType(), 'text' => $this->label, 'min' => $this->min, 'max' => $this->max];
+		$slider = [
+			'type' => $this->getType(),
+			'text' => Translate::translate($this->label),
+			'min' => $this->min,
+			'max' => $this->max,
+		];
+
 		if ($this->step !== null) {
 			$slider['step'] = $this->step;
 		}
@@ -171,7 +179,7 @@ class Slider extends CustomElement {
 		}
 
 		if ($this->tooltip !== null) {
-			$slider['tooltip'] = $this->tooltip;
+			$slider['tooltip'] = Translate::translate($this->tooltip);
 		}
 
 		$components['content'][] = $slider;

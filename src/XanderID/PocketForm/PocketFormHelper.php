@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace XanderID\PocketForm;
 
 use Closure;
+use pocketmine\lang\Translatable;
 use XanderID\PocketForm\custom\CustomForm;
 use XanderID\PocketForm\element\Element;
 use XanderID\PocketForm\modal\ModalForm;
@@ -27,16 +28,16 @@ class PocketFormHelper {
 	/**
 	 * Create a menu form (SimpleForm) with buttons.
 	 *
-	 * @param string       $title      the title of the form
-	 * @param string       $body       the body content of the form
-	 * @param list<Button> $buttons    an array of Button instance
-	 * @param Closure      $onResponse the callback to handle the response
+	 * @param string|Translatable $title      the title of the form
+	 * @param string|Translatable $body       the body content of the form
+	 * @param list<Button>        $buttons    an array of Button instance
+	 * @param Closure             $onResponse the callback to handle the response
 	 *
 	 * @return SimpleForm returns a SimpleForm instance
 	 *
 	 * @throws PocketFormException if any value in the $buttons array is not a Button instance
 	 */
-	public static function menu(string $title, string $body, array $buttons, Closure $onResponse) : SimpleForm {
+	public static function menu(string|Translatable $title, string|Translatable $body, array $buttons, Closure $onResponse) : SimpleForm {
 		if (Utils::validateArrayValueType($buttons, function (Button $button) : void {})) {
 			throw new PocketFormException('Failed to build buttons Element: Buttons array can only be Button instances!');
 		}
@@ -52,15 +53,21 @@ class PocketFormHelper {
 	/**
 	 * Create a confirmation form (ModalForm) with custom submit and cancel texts.
 	 *
-	 * @param string  $title      the title of the confirmation form
-	 * @param string  $body       the body content of the confirmation form
-	 * @param Closure $onResponse the callback to handle the confirmation response
-	 * @param string  $submit     the text for the submit button (default is ModalForm::DEFAULT_SUBMIT)
-	 * @param string  $cancel     the text for the cancel button (default is ModalForm::DEFAULT_CANCEL)
+	 * @param string|Translatable $title      the title of the confirmation form
+	 * @param string|Translatable $body       the body content of the confirmation form
+	 * @param Closure             $onResponse the callback to handle the confirmation response
+	 * @param string|Translatable $submit     the text for the submit button (default is ModalForm::DEFAULT_SUBMIT)
+	 * @param string|Translatable $cancel     the text for the cancel button (default is ModalForm::DEFAULT_CANCEL)
 	 *
 	 * @return ModalForm returns a ModalForm instance
 	 */
-	public static function confirm(string $title, string $body, Closure $onResponse, string $submit = ModalForm::DEFAULT_SUBMIT, string $cancel = ModalForm::DEFAULT_CANCEL) : ModalForm {
+	public static function confirm(
+		string|Translatable $title,
+		string|Translatable $body,
+		Closure $onResponse,
+		string|Translatable $submit = ModalForm::DEFAULT_SUBMIT,
+		string|Translatable $cancel = ModalForm::DEFAULT_CANCEL
+	) : ModalForm {
 		$form = new ModalForm($title);
 		$form->setBody($body);
 		$form->setSubmit($submit);
@@ -72,16 +79,21 @@ class PocketFormHelper {
 	/**
 	 * Create a custom form (CustomForm) with the specified elements.
 	 *
-	 * @param string        $title      the title of the custom form
-	 * @param list<Element> $elements   an array of elements to be added to the form
-	 * @param Closure       $onResponse the callback to handle the custom form response
-	 * @param string        $submit     the text for the submit button (default is CustomForm::DEFAULT_SUBMIT)
+	 * @param string|Translatable $title      the title of the custom form
+	 * @param list<Element>       $elements   an array of elements to be added to the form
+	 * @param Closure             $onResponse the callback to handle the custom form response
+	 * @param string|Translatable $submit     the text for the submit button (default is CustomForm::DEFAULT_SUBMIT)
 	 *
 	 * @return CustomForm returns a CustomForm instance
 	 *
 	 * @throws PocketFormException if the elements array contains invalid element types
 	 */
-	public static function custom(string $title, array $elements, Closure $onResponse, string $submit = CustomForm::DEFAULT_SUBMIT) : CustomForm {
+	public static function custom(
+		string|Translatable $title,
+		array $elements,
+		Closure $onResponse,
+		string|Translatable $submit = CustomForm::DEFAULT_SUBMIT
+	) : CustomForm {
 		Utils::validateArrayElement($elements, 'Failed to build Elements');
 		$form = new CustomForm($title);
 		$form->setSubmit($submit);

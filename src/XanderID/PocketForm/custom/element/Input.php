@@ -13,23 +13,25 @@ declare(strict_types=1);
 
 namespace XanderID\PocketForm\custom\element;
 
+use pocketmine\lang\Translatable;
 use XanderID\PocketForm\custom\CustomElement;
+use XanderID\PocketForm\utils\Translate;
 
 /**
  * Represents an input field element.
  */
 class Input extends CustomElement {
 	/**
-	 * @param string      $label       the label for the input field
-	 * @param string      $placeholder the placeholder text for the input
-	 * @param string|null $default     the default value for the input (optional)
-	 * @param string|null $tooltip     tooltip shown on hover (optional)
+	 * @param string|Translatable      $label       the label for the input field
+	 * @param string|Translatable      $placeholder the placeholder text for the input
+	 * @param string|null              $default     the default value for the input (optional)
+	 * @param string|Translatable|null $tooltip     tooltip shown on hover (optional)
 	 */
 	public function __construct(
-		string $label,
-		protected string $placeholder = '',
+		string|Translatable $label,
+		protected string|Translatable $placeholder = '',
 		protected ?string $default = null,
-		?string $tooltip = null
+		null|string|Translatable $tooltip = null
 	) {
 		$this->setLabel($label);
 		$this->setTooltip($tooltip);
@@ -38,12 +40,12 @@ class Input extends CustomElement {
 	/**
 	 * Creates a new Input element.
 	 *
-	 * @param string      $label       the label for the input field
-	 * @param string      $placeholder the placeholder text for the input
-	 * @param string|null $default     the default value for the input (optional)
-	 * @param string|null $tooltip     tooltip shown on hover (optional)
+	 * @param string|Translatable      $label       the label for the input field
+	 * @param string|Translatable      $placeholder the placeholder text for the input
+	 * @param string|null              $default     the default value for the input (optional)
+	 * @param string|Translatable|null $tooltip     tooltip shown on hover (optional)
 	 */
-	public static function create(string $label, string $placeholder = '', ?string $default = null, ?string $tooltip = null) : self {
+	public static function create(string|Translatable $label, string|Translatable $placeholder = '', ?string $default = null, null|string|Translatable $tooltip = null) : self {
 		return new self($label, $placeholder, $default, $tooltip);
 	}
 
@@ -59,18 +61,18 @@ class Input extends CustomElement {
 	/**
 	 * Get the placeholder text.
 	 *
-	 * @return string the placeholder text
+	 * @return string|Translatable the placeholder text
 	 */
-	public function getPlaceholder() : string {
+	public function getPlaceholder() : string|Translatable {
 		return $this->placeholder;
 	}
 
 	/**
 	 * Set the placeholder text.
 	 *
-	 * @param string $placeholder the new placeholder text
+	 * @param string|Translatable $placeholder the new placeholder text
 	 */
-	public function setPlaceholder(string $placeholder) : self {
+	public function setPlaceholder(string|Translatable $placeholder) : self {
 		$this->placeholder = $placeholder;
 		return $this;
 	}
@@ -100,13 +102,18 @@ class Input extends CustomElement {
 	 * @param array<string, list<array<string, mixed>>> &$components The components array to add the input to
 	 */
 	public function build(array &$components) : void {
-		$input = ['type' => $this->getType(), 'text' => $this->label, 'placeholder' => $this->placeholder];
+		$input = [
+			'type' => $this->getType(),
+			'text' => Translate::translate($this->label),
+			'placeholder' => Translate::translate($this->placeholder),
+		];
+
 		if ($this->default !== null) {
 			$input['default'] = $this->default;
 		}
 
 		if ($this->tooltip !== null) {
-			$input['tooltip'] = $this->tooltip;
+			$input['tooltip'] = Translate::translate($this->tooltip);
 		}
 
 		$components['content'][] = $input;
