@@ -60,7 +60,17 @@
   { "country": "Dominica", "code": "1-767", "iso": "DM" },
   {
     "country": "Dominican Republic",
-    "code": "1-809, 1-829, 1-849",
+    "code": "1-809",
+    "iso": "DO"
+  },
+  {
+    "country": "Dominican Republic",
+    "code": "1-829",
+    "iso": "DO"
+  },
+  {
+    "country": "Dominican Republic",
+    "code": "1-849",
     "iso": "DO"
   },
   { "country": "East Timor", "code": "670", "iso": "TL" },

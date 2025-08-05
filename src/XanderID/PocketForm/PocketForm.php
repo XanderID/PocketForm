@@ -19,6 +19,7 @@ use pocketmine\lang\Translatable;
 use pocketmine\player\Player;
 use pocketmine\utils\Utils;
 use XanderID\PocketForm\traits\Elements;
+use XanderID\PocketForm\traits\FormCloseable;
 use XanderID\PocketForm\utils\Translate;
 use function gettype;
 use function is_array;
@@ -33,6 +34,7 @@ use function is_int;
  */
 abstract class PocketForm implements Form {
 	use Elements;
+	use FormCloseable;
 
 	/** @var Closure(T):void|null Callback for handling the form response */
 	protected ?Closure $onResponseListener = null;
@@ -141,7 +143,7 @@ abstract class PocketForm implements Form {
 	 */
 	public function handleResponse(Player $player, mixed $data) : void {
 		match (true) {
-			$data === null => $this->onCloseListener?->__invoke($player),
+			$data === null => $this->isCloseable() ? $this->onCloseListener?->__invoke($player) : $player->sendForm($this),
 			is_bool($data) || is_int($data) || is_array($data) => $this->callOnResponse($player, $data),
 			default => throw new PocketFormException('Expected bool, int, array, or null, got ' . gettype($data)),
 		};

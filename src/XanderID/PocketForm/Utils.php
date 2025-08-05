@@ -79,6 +79,24 @@ class Utils {
 	}
 
 	/**
+	 * Get the default raw value for the given CustomElement type.
+	 *
+	 * @param CustomElement $element the element to get default value for
+	 *
+	 * @return bool|float|int|string the default value
+	 */
+	public static function defaultValue(CustomElement $element) : bool|float|int|string {
+		return match (true) {
+			$element instanceof Input => '',
+			$element instanceof Dropdown => 0,
+			$element instanceof Slider => $element->getMin(),
+			$element instanceof StepSlider => 0,
+			$element instanceof Toggle => false,
+			default => throw new PocketFormException('Could not find Element'),
+		};
+	}
+
+	/**
 	 * Maps the raw CustomForm response data to align with the form's elements.
 	 *
 	 * In some versions (e.g. 1.21.70), Label elements are not included in the response data since they are non-interactive.
