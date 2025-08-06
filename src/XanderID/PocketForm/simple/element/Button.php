@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace XanderID\PocketForm\simple\element;
 
 use pocketmine\lang\Translatable;
-use XanderID\PocketForm\element\Element;
+use XanderID\PocketForm\element\extends\Element;
 use XanderID\PocketForm\traits\Confirm;
 use XanderID\PocketForm\traits\onClick;
 use XanderID\PocketForm\Utils;

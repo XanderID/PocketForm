@@ -14,6 +14,8 @@ declare(strict_types=1);
 namespace XanderID\PocketForm\element;
 
 use pocketmine\lang\Translatable;
+use XanderID\PocketForm\element\extends\ReadonlyElement;
+use XanderID\PocketForm\element\extends\UniversalElement;
 use XanderID\PocketForm\traits\FormLabel;
 use XanderID\PocketForm\Utils;
 use XanderID\PocketForm\utils\Translate;

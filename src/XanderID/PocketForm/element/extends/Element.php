@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-namespace XanderID\PocketForm\element;
+namespace XanderID\PocketForm\element\extends;
 
 use XanderID\PocketForm\PocketFormException;
 

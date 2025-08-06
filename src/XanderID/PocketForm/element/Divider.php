@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace XanderID\PocketForm\element;
 
+use XanderID\PocketForm\element\extends\ReadonlyElement;
+use XanderID\PocketForm\element\extends\UniversalElement;
 use XanderID\PocketForm\Utils;
 
 /**

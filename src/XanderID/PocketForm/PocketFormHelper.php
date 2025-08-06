@@ -16,7 +16,7 @@ namespace XanderID\PocketForm;
 use Closure;
 use pocketmine\lang\Translatable;
 use XanderID\PocketForm\custom\CustomForm;
-use XanderID\PocketForm\element\Element;
+use XanderID\PocketForm\element\extends\Element;
 use XanderID\PocketForm\modal\ModalForm;
 use XanderID\PocketForm\simple\element\Button;
 use XanderID\PocketForm\simple\SimpleForm;

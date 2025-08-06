@@ -22,8 +22,8 @@ use XanderID\PocketForm\custom\element\Slider;
 use XanderID\PocketForm\custom\element\StepSlider;
 use XanderID\PocketForm\custom\element\Toggle;
 use XanderID\PocketForm\element\ErrorLabel;
+use XanderID\PocketForm\element\extends\ReadonlyElement;
 use XanderID\PocketForm\element\Label;
-use XanderID\PocketForm\element\ReadonlyElement;
 
 /**
  * Represents a response from a form submitted by a player.

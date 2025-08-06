@@ -15,7 +15,7 @@ namespace XanderID\PocketForm\custom;
 
 use XanderID\PocketForm\custom\element\Input;
 use XanderID\PocketForm\custom\validator\TypeValidator;
-use XanderID\PocketForm\element\Element;
+use XanderID\PocketForm\element\extends\Element;
 use XanderID\PocketForm\PocketFormException;
 use XanderID\PocketForm\traits\FormLabel;
 use XanderID\PocketForm\traits\FormValidator;
