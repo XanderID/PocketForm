@@ -21,6 +21,7 @@ use XanderID\PocketForm\custom\element\Slider;
 use XanderID\PocketForm\custom\element\StepSlider;
 use XanderID\PocketForm\custom\element\Toggle;
 use XanderID\PocketForm\element\ErrorLabel;
+use XanderID\PocketForm\element\extends\Element;
 use XanderID\PocketForm\element\extends\ReadonlyElement;
 use XanderID\PocketForm\element\Label;
 use XanderID\PocketForm\modal\ModalFormResponse;
@@ -30,6 +31,8 @@ use XanderID\PocketForm\traits\Confirm;
 use XanderID\PocketForm\traits\Submit;
 use XanderID\PocketForm\Utils;
 use XanderID\PocketForm\utils\Translate;
+use function array_filter;
+use function array_values;
 use function count;
 use function gettype;
 use function is_array;
@@ -96,6 +99,80 @@ class CustomForm extends PocketForm {
 	}
 
 	/**
+	 * Set default value to the given interactive element.
+	 *
+	 * @param Dropdown|Input|Slider|StepSlider|Toggle $element target element
+	 * @param bool|float|int|string                   $value   value to set as default
+	 */
+	public function applyDefaultValue(Dropdown|Input|Slider|StepSlider|Toggle $element, bool|float|int|string $value) : void {
+		$element->setDefault($value);
+	}
+
+	/**
+	 * Removes all ErrorLabel elements from the form.
+	 */
+	public function clearErrorLabels() : void {
+		$elements = array_filter(
+			$this->getElements(),
+			fn (Element $el) => !$el instanceof ErrorLabel
+		);
+
+		$this->setElements(array_values($elements));
+	}
+
+	/**
+	 * Validates and manages errors, updating error label list and state flag.
+	 *
+	 * @param array<int, ErrorLabel> &$errorLabels
+	 * @param array<int, Element>    &$elements
+	 *
+	 * @return bool Whether the validation failed
+	 */
+	public function validateAndHandleError(
+		CustomElement $element,
+		mixed $parsed,
+		array &$errorLabels,
+		array &$elements,
+		int $index
+	) : bool {
+		$prevIndex = $index - 1;
+		$previous = $elements[$prevIndex] ?? null;
+
+		if ($previous instanceof ErrorLabel) {
+			unset($elements[$prevIndex]);
+		}
+
+		$validated = $element->validate($parsed);
+
+		if ($validated !== null) {
+			$errorLabels[$index] = new ErrorLabel($validated);
+			return true;
+		}
+
+		return false;
+	}
+
+	/**
+	 * Rebuilds form with error labels if needed.
+	 *
+	 * @param array<int, Element>    $elements
+	 * @param array<int, ErrorLabel> $errorLabels
+	 */
+	public function rebuildFormIfError(array $elements, array $errorLabels, Player $player) : void {
+		$newElements = [];
+		foreach ($elements as $index => $element) {
+			if (isset($errorLabels[$index])) {
+				$newElements[] = $errorLabels[$index];
+			}
+
+			$newElements[] = $element;
+		}
+
+		$this->setElements($newElements);
+		$player->sendForm($this);
+	}
+
+	/**
 	 * Process the custom form response data.
 	 *
 	 * @param Player $player the player who submitted the form
@@ -118,28 +195,14 @@ class CustomForm extends PocketForm {
 		foreach ($mapData as $index => $value) {
 			/** @var CustomElement|Label $element */
 			$element = $elements[$index];
+
 			if ($element instanceof ReadonlyElement) {
 				continue;
 			}
 
 			/** @var bool|float|int|string $value */
 			$parsed = Utils::customValue($element, $value);
-			$validated = $element->validate($parsed);
-			$indexInt = (int) $index;
-			$previous = $elements[$indexInt - 1] ?? null;
-			if ($validated !== null) {
-				if ($previous instanceof ErrorLabel) {
-					$previous->setLabel($validated);
-				} else {
-					$errorLabels[$indexInt] = new ErrorLabel($validated);
-				}
-
-				$isError = true;
-			} else {
-				if ($previous instanceof ErrorLabel) {
-					unset($elements[$indexInt - 1]);
-				}
-			}
+			$isError |= $this->validateAndHandleError($element, $parsed, $errorLabels, $elements, (int) $index);
 
 			$values[] = $parsed;
 			$element->setValue($parsed);
@@ -148,21 +211,11 @@ class CustomForm extends PocketForm {
 			 * @var Dropdown|Input|Slider|StepSlider|Toggle $element
 			 * @var bool|float|int|string $value
 			 */
-			$element->setDefault($value);
+			$this->applyDefaultValue($element, $value);
 		}
 
 		if ($isError) {
-			$newElements = [];
-			foreach ($elements as $index => $element) {
-				if (isset($errorLabels[$index])) {
-					$newElements[] = $errorLabels[$index];
-				}
-
-				$newElements[] = $element;
-			}
-
-			$this->setElements($newElements);
-			$player->sendForm($this);
+			$this->rebuildFormIfError($elements, $errorLabels, $player);
 			return;
 		}
 

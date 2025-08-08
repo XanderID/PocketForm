@@ -31,9 +31,9 @@ abstract class Element {
 	/**
 	 * Get the type of the element.
 	 *
-	 * @return string|null The element type (e.g., "input", "dropdown") or null if not defined.
+	 * @return string The element type (e.g., "input", "dropdown").
 	 */
-	abstract public function getType() : ?string;
+	abstract public function getType() : string;
 
 	/**
 	 * Build the element into the components array.

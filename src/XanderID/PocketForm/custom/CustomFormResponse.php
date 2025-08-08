@@ -14,6 +14,13 @@ declare(strict_types=1);
 namespace XanderID\PocketForm\custom;
 
 use pocketmine\lang\Translatable;
+use XanderID\PocketForm\custom\element\Dropdown;
+use XanderID\PocketForm\custom\element\Input;
+use XanderID\PocketForm\custom\element\Slider;
+use XanderID\PocketForm\custom\element\StepSlider;
+use XanderID\PocketForm\custom\element\Toggle;
+use XanderID\PocketForm\element\extends\ReadonlyElement;
+use XanderID\PocketForm\element\Label;
 use XanderID\PocketForm\PocketFormException;
 use XanderID\PocketForm\PocketFormResponse;
 use XanderID\PocketForm\Utils;
@@ -60,5 +67,39 @@ class CustomFormResponse extends PocketFormResponse {
 	 */
 	public function getValues() : array {
 		return $this->response;
+	}
+
+	/**
+	 * Resends the form to the player.
+	 *
+	 * If the $withPreviousData is true,
+	 * the form will be prefilled with the player's previously submitted data.
+	 *
+	 * @param bool $withPreviousData whether to restore the previously submitted data into the form
+	 */
+	public function resendForm(bool $withPreviousData = true) : void {
+		/** @var array<int, scalar|null> $data */
+		$data = $this->data;
+		$elements = $this->form->getElements();
+		$mapData = Utils::customMap($elements, $data);
+
+		foreach ($mapData as $index => $_) {
+			/** @var CustomElement|Label $element */
+			$element = $elements[$index];
+			if ($element instanceof ReadonlyElement) {
+				continue;
+			}
+
+			$this->form->clearErrorLabels();
+
+			/**
+			 * @var Dropdown|Input|Slider|StepSlider|Toggle $element
+			 * @var bool|float|int|string $newValue
+			 */
+			$newValue = $withPreviousData ? $element->getDefault() : Utils::defaultValue($element);
+			$this->form->applyDefaultValue($element, $newValue);
+		}
+
+		$this->player->sendForm($this->form);
 	}
 }
